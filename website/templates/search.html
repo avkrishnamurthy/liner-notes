@@ -1,0 +1,128 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+    %}
+
+    <style>
+        .album-list {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          grid-gap: 20px;
+        }
+      
+        .album-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          color: #fff;
+        }
+      
+        .album-button {
+          background: transparent;
+          border: none;
+          padding: 0;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+        }
+      
+        .album-button:hover {
+          background-color: rgba(0, 0, 0, 0.3);
+        }
+      
+        .album-button:focus {
+          outline: none;
+        }
+      
+        .album-image {
+          width: 100%;
+          height: auto;
+          object-fit: cover;
+          margin-bottom: 10px;
+          border: 2px solid transparent;
+          transition: border-color 0.3s ease;
+        }
+
+        .album-image:hover {
+          border-color: #0a9b3d;
+          border-width: 7px;
+        }
+      
+        .album-name {
+          font-size: 16px;
+          font-weight: bold;
+          line-height: 1.2;
+          margin-bottom: 5px;
+        }
+      
+        .review-form {
+          display: none;
+          margin-top: 10px;
+        }
+      
+        .review-form label {
+          display: block;
+          margin-bottom: 5px;
+          color: #fff;
+        }
+      
+        .review-form textarea {
+          height: 100px;
+          /* padding: 5px; */
+          width: 100%;
+          padding: 1.5rem;
+          border-radius: 0.5rem;
+          background: transparent;
+          border: 2px solid white;
+          resize: none;
+          color: white;
+        }
+      
+        .review-form button {
+          margin-top: 10px;
+        }
+      
+        h1 {
+          color: white;
+        }
+      
+        body {
+          background-color: black;
+        }
+
+        .album-button p {
+            color: white;
+        }
+      </style>
+<form method="POST">
+    <input name="artist" id="artist" class="form-control" placeholder="Enter Artist Name"></input>
+    <br />
+    <div align="center">
+      <button type="submit" class="btn btn-primary">
+          Search</button>
+    </div>
+  </form>
+
+  <ul class="album-list">
+    {% for album in img_urls %}
+    <li class="album-item">
+      <button type="button" class="album-button" onClick="showReviewForm('{{ album[0] }}', '{{ album[1] }}')">
+        <img src="{{ album[0] }}" alt="Album Cover" class="album-image">
+        <p class="album-name">{{ album[1] }}</p>
+      </button>
+      <div id="reviewForm-{{ album[1] }}" class="review-form">
+        <form method="POST" onsubmit="submitReview(event, '{{ album[0] }}', '{{ album[1] }}')">
+          <label for="rating">Rating (out of 10):</label>
+          <input type="number" name="rating-{{album[1]}}" id="rating-{{album[1]}}" min="1" max="10" required>
+          <br>
+          <label for="review"></label>
+          <textarea name="review-{{album[1]}}" id="review-{{album[1]}}" rows="4" cols="50" placeholder = "Enter Review" required></textarea>
+          <br>
+          <button type="submit" class="btn btn-primary">Add Album Review</button>
+        </form>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+  {% endblock %}
