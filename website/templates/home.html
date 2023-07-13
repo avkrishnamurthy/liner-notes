@@ -1,6 +1,20 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
     %}
     <h1 align="center">{{user.username}}'s Albums</h1>
+    <h1>Who I follow</h1>
+    <ul class="user-list">
+      {% for followed_user in user.following %}
+      <li>{{ followed_user.username }}</li>
+      {% endfor %}
+    </ul>
+
+    <h1>Who follows me</h1>
+    <ul class="user-list">
+      {% for followed_user in user.follower %}
+      <li>{{ followed_user.username }}</li>
+      {% endfor %}
+    </ul>
+
     <ul class="list-group list-group-flush" id="albums">
       {% for album in user.albums %}
       <li class="list-group-item">

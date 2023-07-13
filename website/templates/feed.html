@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Profile{% endblock %}
+{% block title %}Feed{% endblock %}
 
 {% block content %}
 
@@ -83,46 +83,20 @@
   .top-tracks-container {
     width: 60%; /* Adjust the width as desired */
   }
+  p {
+    color: white;
+  }
 </style>
 
-<h1>Welcome, {{ user.username }}!</h1>
-
-<div class="playlist-container">
-  <h2>Your Albums</h2>
-  <ul class="album-list">
-    {% for album in user.albums %}
-    <li class="album-item">
-      <div class="album-cover">
-        <img src="{{ album.album_img }}" alt="Album Cover" class="album-image">
-      </div>
-      <div class="album-details">
-        <h3 class="album-title">{{ album.album_name }}</h3>
-        <p class="album-rating">Rating: {{ album.rating }}</p>
-        <p class="album-review">Review: {{ album.review }}</p>
-      </div>
-    </li>
-    {% endfor %}
-  </ul>
-</div>
-
-<div class="playlist-container top-tracks-container">
-  <h2>Your Top Tracks</h2>
-  <ul class="track-list">
-    {% for track in t_tracks %}
-    <li class="track-item">
-      <div class="track-cover">
-        <img src="{{ track[1] }}" alt="Track Cover" class="track-image">
-      </div>
-      <div class="track-details">
-        <h3 class="track-title">{{ track[0] }}</h3>
-        <p class="track-artist">{{ track[2] }}</p>
-      </div>
-    </li>
-    {% endfor %}
-  </ul>
-</div>
-
-
-
+{% for album in feed %}
+    <div class="feed">
+      <h2>{{ album.album_name }}</h2>
+      <p>{{ album.user.username }} reviewed this album</p>
+      <img src="{{ album.album_img }}" alt="Album Cover">
+      <p>Rating: {{ album.rating }}</p>
+      <p>Review: {{ album.review }}</p> 
+      <p>{{convert_datetime(album.date)}}</p>
+    </div>
+  {% endfor %}
 
 {% endblock %}

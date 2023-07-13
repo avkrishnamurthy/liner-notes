@@ -1,0 +1,5 @@
+__pycache__
+boxenv
+website/__pycache__
+.cache
+.env

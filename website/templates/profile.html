@@ -83,6 +83,9 @@
   .top-tracks-container {
     width: 60%; /* Adjust the width as desired */
   }
+  .follow-btn {
+    margin-bottom: 10px;
+  }
 </style>
 
 <h1>{{ user.username }}'s Profile!</h1>
@@ -124,6 +127,20 @@
     {% endfor %}
   </ul>
 </div>
+{% endif %}
+
+{% if current_user.is_authenticated %}
+  {% if current_user.id != user.id %}
+    <form action="{{ url_for('views.follow', username=user.username) }}" method="POST">
+      <button type="submit" class="btn btn-primary follow-btn">
+        {% if current_user in user.follower %}
+          Unfollow
+        {% else %}
+          Follow
+        {% endif %}
+      </button>
+    </form>
+  {% endif %}
 {% endif %}
 
 {% endblock %}

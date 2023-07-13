@@ -31,9 +31,8 @@
         <div class="navbar-nav ml-auto">
           {% if user.is_authenticated %}
           <a class="nav-item nav-link" id="home" href="/">Home</a>
-          <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
+          <a class="nav-item nav-link" id="feed" href="/feed">Feed</a>
           <a class="nav-item nav-link" id="search" href="/search">Search Album</a>
-          <a class="nav-item nav-link" id="profile" href="/my-profile">My Profile</a>
           <div class="nav-item dropdown">
             <a
               class="nav-link dropdown-toggle"
@@ -56,6 +55,8 @@
               </form>
             </div>
           </div>
+          <a class="nav-item nav-link" id="profile" href="/my-profile">My Profile</a>
+          <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
           {% else %}
           <a class="nav-item nav-link" id="login" href="/login">Login</a>
           <a class="nav-item nav-link" id="signUp" href="/sign-up">Create Account</a>
@@ -81,6 +82,12 @@
       </button>
     </div>
     {% endif %} {% endfor %} {% endif %} {% endwith %}
+
+    <div id="success-message" style="display: none; margin-top: 10px;">
+      <div class="alert alert-success" role="alert">
+        Album added successfully!
+      </div>
+    </div>
 
     <div class="container">{% block content %} {% endblock %}</div>
     <script
@@ -162,18 +169,26 @@
       body: JSON.stringify(reviewData),
     })
     .then((_res) => {
-      window.location.href = "/search";
-    });
-  }
+    // Clear the rating and review fields
+    document.getElementById("rating-"+albumName).value = "";
+    document.getElementById("review-"+albumName).value = "";
 
-    // function addAlbum(albumImgUrl, albumName) {
-    //     fetch("/add-album", {
-    //         method: "POST",
-    //         body: JSON.stringify({ albumImgUrl: albumImgUrl, albumName: albumName}),
-    //     }).then((_res) =>  {
-    //         window.location.href = "/search"
-    //     });
-    // }
+    // Hide the review form for the submitted album
+    const reviewForm = document.getElementById(`reviewForm-${albumName}`);
+    reviewForm.style.display = 'none';
+
+    // Show the success message
+    const successMessage = document.getElementById('success-message');
+    successMessage.style.display = 'block';
+
+    // Optional: You can also display a notification or perform any other action here
+
+    // Delay the success message for 5 seconds
+    setTimeout(() => {
+      successMessage.style.display = 'none';
+    }, 5000);
+  });
+  }
 
     function deleteAlbum(albumId) {
         fetch("/delete-album", {

@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
 from flask_login import login_required, current_user
+import jinja2
 from .models import Album, User
 from . import db
 import json
@@ -10,6 +11,7 @@ from requests import post, get
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import time
+from datetime import datetime
 
 views = Blueprint('views', __name__)
 
@@ -20,7 +22,7 @@ def home():
     return render_template("home.html", user=current_user)
 
 
-@views.route('/profile/<username>')
+@views.route('/profile/<username>', methods=['GET', 'POST'])
 @login_required
 def profile(username):
     if username==current_user.username:
@@ -29,8 +31,26 @@ def profile(username):
     if not user: 
         flash("User does not exist", category="error")
         return redirect(url_for("views.my_profile", _external=True))
-    return render_template('profile.html', user=user)
+    
 
+    return render_template('profile.html', current_user = current_user, user=user)
+
+@views.route('/follow/<username>', methods=['POST'])
+@login_required
+def follow(username):
+    user = User.query.filter_by(username=username).first()
+    if not user:
+        flash("User does not exist", category="error")
+        return redirect(url_for("views.my_profile"))
+
+    if current_user in user.follower:
+        user.follower.remove(current_user)
+    else:
+        user.follower.append(current_user)
+    
+    db.session.commit()
+
+    return redirect(url_for("views.profile", username=username))
 
 @views.route('/check-user-exists', methods=['POST'])
 def check_user_exists():
@@ -68,8 +88,34 @@ def my_profile():
         user = User.query.get(current_user.id)
         user.top_tracks = top_tracks_json
         db.session.commit()
-
         return render_template("my_profile.html", user=current_user, t_tracks = tracks)
+
+
+@views.route('/feed')
+@login_required
+def feed():
+    my_feed = current_user.feed.limit(10).all()
+
+
+    # environment = jinja2.Environment("feed.html")
+    # environment.filters['time'] = convert_datetime
+    return render_template("feed.html", user=current_user, feed=my_feed, convert_datetime=convert_datetime)
+
+def convert_datetime(timestamp):
+    now = datetime.now(timestamp.tzinfo)
+    time_diff = now - timestamp
+
+    if time_diff.total_seconds() < 60 * 60:  # Less than 60 minutes
+        minutes = int(time_diff.total_seconds() / 60)
+        return f"{minutes} minute{'s' if minutes != 1 else ''} ago"
+
+    elif time_diff.total_seconds() < 24 * 60 * 60:  # Less than 24 hours
+        hours = int(time_diff.total_seconds() / 60 / 60)
+        return f"{hours} hour{'s' if hours != 1 else ''} ago"
+
+    else:  # More than 24 hours
+        days = int(time_diff.total_seconds() / 60 / 60 / 24)
+        return f"{days} day{'s' if days != 1 else ''} ago"
 
 @views.route('/redirect')
 @login_required
@@ -186,6 +232,5 @@ def add_album():
     new_album = Album(album_name = album_name, album_img=album_img, user_id = current_user.id, rating=rating, review=review)
     db.session.add(new_album)
     db.session.commit()
-    flash("Album added", category="success")
     return jsonify({})
 
