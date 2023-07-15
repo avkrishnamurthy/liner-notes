@@ -94,7 +94,9 @@ def my_profile():
 @views.route('/feed')
 @login_required
 def feed():
-    my_feed = current_user.feed.limit(10).all()
+    page = request.args.get('page', 1, type=int)
+    per_page = 3
+    my_feed = current_user.feed.paginate(page=page, per_page=per_page)
 
 
     # environment = jinja2.Environment("feed.html")

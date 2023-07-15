@@ -28,5 +28,17 @@
       </li>
       {% endfor %}
     </ul>
+
+    <h1>Feed</h1>
+  <div id="feed-container">
+    {% for album in user.feed %}
+      <div class="feed">
+        <h2>{{ album.album_name }}</h2>
+        <p>{{ album.user.username }} reviewed this album</p>
+        <img src="{{ album.album_img }}" alt="Album Cover">
+        <p>Rating: {{ album.rating }}</p>
+        <p>Review: {{ album.review }}</p>
+      </div>
+    {% endfor %}
     {% endblock %}
     

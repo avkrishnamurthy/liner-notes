@@ -3,69 +3,53 @@
 {% block title %}Feed{% endblock %}
 
 {% block content %}
+<head>
+    <title>Feed</title>
+    <style>
 
-<style>
-  .playlist-container {
-    background-color: #1c1c1c;
-    padding: 20px;
-    margin-bottom: 40px;
-  }
+.feed-container {
+  margin: 5px;
+}
+img {
+  max-width: 100%;
+  max-height: 100%;
+}
+.feed {
+  display: flex;
+  border: 1px solid rgb(255, 253, 253);
+  border-width: 3px;
+}
 
-  .album-list,
-  .track-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
 
-  .album-item,
-  .track-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-  }
+.album-image {
+  flex: 0 0 auto; /* Add this to make the image take available space */
+}
 
-  .album-cover,
-  .track-cover {
-    width: 80px;
-    height: 80px;
-    margin-right: 20px;
-    overflow: hidden;
-  }
+.album-image h2 {
+  font-size: 20px;
+  max-width: 70%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin: 0; /* Reset margin to prevent extra spacing */
+  color:rgb(223, 215, 215)
+}
 
-  .album-image,
-  .track-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+.album-container {
+  font-size: 20px;
+  padding-left: 20px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 1.5rem;
+  flex-grow: 1;
+}
 
-  .album-details,
-  .track-details {
-    color: #fff;
-  }
+.album-text {
+  margin-bottom: auto; /* Pushes "Reviewed by" to the bottom */
+}
 
-  .album-title,
-  .track-title {
-    margin: 0;
-    font-size: 16px;
-    font-weight: bold;
-    line-height: 1.2;
-  }
-
-  .album-rating,
-  .album-review,
-  .track-artist,
-  .track-album {
-    margin: 0;
-    font-size: 14px;
-    line-height: 1.2;
-  }
-
-  .track-list {
-    display: flex;
-    flex-direction: column;
-  }
 
   h1,
   h2 {
@@ -73,30 +57,110 @@
   }
 
   body {
-    background-color: black;
+    background-color: rgb(0, 0, 0);
   }
 
   .track-details p {
-    color: rgb(160, 158, 158);
+    color: rgb(0, 59, 0);
   }
 
-  .top-tracks-container {
-    width: 60%; /* Adjust the width as desired */
-  }
-  p {
-    color: white;
-  }
-</style>
-
-{% for album in feed %}
-    <div class="feed">
-      <h2>{{ album.album_name }}</h2>
-      <p>{{ album.user.username }} reviewed this album</p>
-      <img src="{{ album.album_img }}" alt="Album Cover">
-      <p>Rating: {{ album.rating }}</p>
-      <p>Review: {{ album.review }}</p> 
-      <p>{{convert_datetime(album.date)}}</p>
+      #loading-symbol {
+        display: none;
+        text-align: center;
+        margin: 20px;
+      }
+      #tag {
+        font-size: 15px;
+      }
+    
+    </style>
+  </head>
+  <body>
+    <h1>Feed</h1>
+    <div class = "feed-container" id="feed-container">
+      {% for album in feed.items %}
+        <div class="feed">
+          <div class = "album-image">
+            <h2>{{album.album_name}}</h2>
+            <img src="{{ album.album_img }}" alt="Album Cover"></div>
+            <div class="album-container">
+              <div class="album-text">
+                <p>Rating: {{ album.rating }}</p>
+                <p id="review">Review: {{ album.review }}</p>
+              </div>
+              <p id="tag">Reviewed by {{ album.user.username }} {{ convert_datetime(album.date) }}</p>
+            </div>
+          
+        </div>
+      {% endfor %}
     </div>
-  {% endfor %}
-
-{% endblock %}
+    <div id="loading-symbol">
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+  
+    <script type="text/javascript">
+      let page = {{ feed.page }};
+      let totalPages = {{ feed.pages }};
+      let loading = false;
+      let allLoaded = (page === totalPages);
+      let userScrolled = false;
+      // Function to check if the user has reached the bottom of the page
+      function atBottomOfPage() {
+        return (
+          window.innerHeight + window.scrollY >= document.body.offsetHeight - 1000
+        );
+      }
+  
+      // Function to load more feed items
+      function loadMoreItems() {
+        if (loading || allLoaded || !userScrolled) return;
+        loading = true;
+  
+        const feedContainer = document.getElementById("feed-container");
+        const loadingSymbol = document.getElementById("loading-symbol");
+  
+        // Show the loading symbol
+        loadingSymbol.style.display = "block";
+  
+        // Fetch the next page of albums
+        fetch(`/feed?page=${page + 1}`)
+          .then((response) => response.text())
+          .then((data) => {
+            const tempDiv = document.createElement("div");
+            tempDiv.innerHTML = data;
+            const newAlbums = tempDiv.querySelectorAll(".feed");
+            if (newAlbums.length === 0) {
+              // No more album reviews remaining
+              allLoaded = true;
+              loadingSymbol.innerHTML = "<span style='color: white;'>You are all caught up! No more album reviews on your feed!</span>";
+              return;
+            }
+  
+            // Append the new albums to the feed container
+            newAlbums.forEach((album) => {
+              feedContainer.appendChild(album);
+            });
+  
+            // Increment the page number
+            page += 1;
+  
+            // Hide the loading symbol after a short delay
+            setTimeout(() => {
+              loadingSymbol.style.display = "none";
+              loading = false;
+            }, 2000);
+          });
+      }
+  
+      // Event listener for scroll event
+      window.addEventListener("scroll", () => {
+        if (atBottomOfPage()) {
+            userScrolled = true;
+          loadMoreItems();
+        }
+      });
+    </script>
+  </body>
+  {% endblock %}
