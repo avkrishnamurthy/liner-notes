@@ -207,7 +207,7 @@ def search_album():
             songs = get_songs_by_artist(token, artist_id)
 
             for i in range(len(songs)):
-                img_urls.append([songs[i]['images'][1]['url'], songs[i]['name']])
+                img_urls.append([songs[i]['images'][1]['url'], songs[i]['name'], i])
     return render_template("search.html", user=current_user, img_urls=img_urls)
 
 @views.route('/delete-album', methods=['POST'])
@@ -226,7 +226,6 @@ def delete_album():
 @views.route('/add-album', methods=["POST"])
 def add_album():
     album = json.loads(request.data)
-
     album_img = album['albumImgUrl']
     album_name = album['albumName']
     rating = album['rating']
@@ -234,5 +233,6 @@ def add_album():
     new_album = Album(album_name = album_name, album_img=album_img, user_id = current_user.id, rating=rating, review=review)
     db.session.add(new_album)
     db.session.commit()
+    flash('Album review added!', category='success')
     return jsonify({})
 

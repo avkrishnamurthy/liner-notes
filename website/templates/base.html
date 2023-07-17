@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
       rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-      crossorigin="anonymous"
+      href="{{url_for('static', filename='stackpath.bootstrapcdn.com_bootstrap_4.4.1_css_bootstrap.min.css')}}"
     />
     <link
       rel="stylesheet"
@@ -149,45 +147,6 @@
         reviewForm.style.display = 'block';
         }
     }
-
-  function submitReview(event, albumImgUrl, albumName) {
-    event.preventDefault();
-
-    let rating = document.getElementById("rating-"+albumName).value;
-    let review = document.getElementById("review-"+albumName).value;
-
-    const reviewData = {
-      albumImgUrl: albumImgUrl,
-      albumName: albumName,
-      rating: rating,
-      review: review
-    };
-
-    fetch("/add-album", {
-      method: "POST",
-      body: JSON.stringify(reviewData),
-    })
-    .then((_res) => {
-    // Clear the rating and review fields
-    document.getElementById("rating-"+albumName).value = "";
-    document.getElementById("review-"+albumName).value = "";
-
-    // Hide the review form for the submitted album
-    const reviewForm = document.getElementById(`reviewForm-${albumName}`);
-    reviewForm.style.display = 'none';
-
-    // Show the success message
-    const successMessage = document.getElementById('success-message');
-    successMessage.style.display = 'block';
-
-    // Optional: You can also display a notification or perform any other action here
-
-    // Delay the success message for 5 seconds
-    setTimeout(() => {
-      successMessage.style.display = 'none';
-    }, 5000);
-  });
-  }
 
     function deleteAlbum(albumId) {
         fetch("/delete-album", {

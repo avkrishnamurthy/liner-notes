@@ -4,107 +4,45 @@
 
 {% block content %}
 
-<style>
-  .playlist-container {
-    background-color: #1c1c1c;
-    padding: 20px;
-    margin-bottom: 40px;
-  }
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='my_profile.css')}}">
 
-  .album-list,
-  .track-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
+<h1 align="center">{{user.first_name}}</h1>
+<p id="username" align="center">@{{user.username}}<p>
+<body>
+  <h3>Favorites</h3>
+  <div class="content">
+    <div class="images">
+      {% for album in user.albums%}
+      <div class="my-album-things">
+        <button data-modal-target="#modal-{{album.id}}" class="img-button"><img src="{{ album.album_img }}" alt="Album Cover" class="album-image"></button>
+        <div class="modal" id="modal-{{album.id}}">
+          <div class="modal-header">
+            <div class="title">{{ album.album_name }}</div>
+            <button data-close-button class="close-button">&times;</button>
+          </div>
+          <div class="modal-body">
+            <p class="album-rating">Rating: {{ album.rating }}HIII</p>
+            <p class="album-review">Review: {{ album.review }}BYEE</p>
+          </div>
+        </div>
+        
+      </div>   
+        {% endfor %}
+        <div id="overlay"></div>
+    </div>
+    <div onclick="side_slide(-1)" class="slide left" id="left">
+      <span class="fa fa-angle-left"></span>
+    </div>
+    <div onclick="side_slide(1)" class="slide right" id="right">
+      <span class="fa fa-angle-right"></span>
+    </div>
+  </div>
+</body>
 
-  .album-item,
-  .track-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-
-  .album-cover,
-  .track-cover {
-    width: 80px;
-    height: 80px;
-    margin-right: 20px;
-    overflow: hidden;
-  }
-
-  .album-image,
-  .track-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .album-details,
-  .track-details {
-    color: #fff;
-  }
-
-  .album-title,
-  .track-title {
-    margin: 0;
-    font-size: 16px;
-    font-weight: bold;
-    line-height: 1.2;
-  }
-
-  .album-rating,
-  .album-review,
-  .track-artist,
-  .track-album {
-    margin: 0;
-    font-size: 14px;
-    line-height: 1.2;
-  }
-
-  .track-list {
-    display: flex;
-    flex-direction: column;
-  }
-
-  h1,
-  h2 {
-    color: white;
-  }
-
-  body {
-    background-color: black;
-  }
-
-  .track-details p {
-    color: rgb(160, 158, 158);
-  }
-
-  .top-tracks-container {
-    width: 60%; /* Adjust the width as desired */
-  }
-</style>
-
-<h1>Welcome, {{ user.username }}!</h1>
-
-<div class="playlist-container">
-  <h2>Your Albums</h2>
-  <ul class="album-list">
-    {% for album in user.albums %}
-    <li class="album-item">
-      <div class="album-cover">
-        <img src="{{ album.album_img }}" alt="Album Cover" class="album-image">
-      </div>
-      <div class="album-details">
-        <h3 class="album-title">{{ album.album_name }}</h3>
-        <p class="album-rating">Rating: {{ album.rating }}</p>
-        <p class="album-review">Review: {{ album.review }}</p>
-      </div>
-    </li>
-    {% endfor %}
-  </ul>
-</div>
-
+<br>
+<br>
 <div class="playlist-container top-tracks-container">
   <h2>Your Top Tracks</h2>
   <ul class="track-list">
@@ -122,4 +60,5 @@
   </ul>
 </div>
 
+<script src="../static/my_profile.js"></script>
 {% endblock %}
