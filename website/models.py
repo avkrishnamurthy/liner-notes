@@ -26,6 +26,7 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(150))
     first_name = db.Column(db.String(150))
     albums = db.relationship('Album', overlaps='user_albums,user')
+    favorite_albums = db.relationship('FavoriteAlbum', overlaps='user_favorite_albums,user')
     top_tracks = db.Column(JSONB)
     access_token = db.Column(db.Text)
     token_expiration = db.Column(db.Integer)
@@ -38,7 +39,6 @@ class User(db.Model, UserMixin):
         backref=db.backref('following', lazy='dynamic'),
         lazy='dynamic'
     )
-
     feed = db.relationship(
         'Album',
         secondary=followers,
@@ -48,3 +48,10 @@ class User(db.Model, UserMixin):
         overlaps="follower,following",
         lazy='dynamic'
     )
+
+class FavoriteAlbum(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    album_name = db.Column(db.String(10000))
+    album_img = db.Column(db.String(10000))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User', backref='user_favorite_albums')

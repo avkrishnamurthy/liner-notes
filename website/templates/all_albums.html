@@ -1,0 +1,20 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} 
+{% block content
+    %}
+
+<ul class="list-group list-group-flush" id="albums">
+    {% for album in user.albums %}
+    <li class="list-group-item">
+      {{ album.album_name }}
+      <img src={{album.album_img}} alt="Album Cover">
+      {{album.rating}}
+      {{album.review}}
+      <button type="button" class="close" onClick="deleteAlbum('{{ album.id }}')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </li>
+    {% endfor %}
+  </ul>
+
+<script src="../static/albums.js"
+  {% endblock %}

@@ -22,7 +22,16 @@ function submitReview(event, albumImgUrl, albumName, albumId) {
     let rating = document.getElementById("rating-"+albumName).value;
     let review = document.getElementById("review-"+albumName).value;
     let modal = document.getElementById("modal-"+albumId)
+    let favoriteButton = document.getElementById("favorite-button-"+albumId)
 
+    if (favoriteButton.style.color === "red") {
+      fetch("/add-favorite", {
+        method: "POST",
+        body: JSON.stringify({ albumImgUrl: albumImgUrl, albumName:albumName }),
+        }).then((_res) => {
+          console.log("success favoriting")
+            });
+    }
     const reviewData = {
       albumImgUrl: albumImgUrl,
       albumName: albumName,
@@ -57,3 +66,13 @@ function submitReview(event, albumImgUrl, albumName, albumId) {
     }, 5000);
   });
   }
+
+function toggleFavorite(albumId) {
+  let favoriteButton = document.getElementById('favorite-button-'+albumId)
+  if (favoriteButton.style.color === "red") {
+    favoriteButton.style.color = "grey"
+  }
+  else {
+    favoriteButton.style.color = "red"
+  }
+}

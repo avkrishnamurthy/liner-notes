@@ -10,9 +10,40 @@
 
 <h1 align="center">{{user.first_name}}</h1>
 <p id="username" align="center">@{{user.username}}<p>
-<body>
-  <h3>Favorites</h3>
+  <div class="fav-rev">
+    <div>
+      <h3>Favorites</h3>
+      <!-- <img src="../static/Spotify_App_Logo.svg"> -->
+      <div class="content">
+    
+        <div class="images">
+          {% for favorite_album in user.favorite_albums%}
+          <div class="my-album-things">
+            <button data-modal-target="#fav-modal-{{favorite_album.id}}" class="img-button"><img src="{{ favorite_album.album_img }}" alt="Album Cover" class="album-image"></button>
+            <div class="modal" id="fav-modal-{{favorite_album.id}}">
+              <div class="modal-header">
+                <div class="title">{{ favorite_album.album_name }}</div>
+                <button data-close-button class="close-button">&times;</button>
+              </div>
+              <div class="modal-body">
+                <p>Hi</p>
+              </div>
+            </div>
+            
+          </div>   
+            {% endfor %}
+            <div id="overlay"></div>
+        </div>
+        <div onclick="side_slide(-1)" class="slide left" id="left">
+          <span class="fa fa-angle-left"></span>
+        </div>
+        <div onclick="side_slide(1)" class="slide right" id="right">
+          <span class="fa fa-angle-right"></span>
+        </div>
+      </div>
+    </div>
   <div class="content">
+    
     <div class="images">
       {% for album in user.albums%}
       <div class="my-album-things">
@@ -39,12 +70,12 @@
       <span class="fa fa-angle-right"></span>
     </div>
   </div>
-</body>
+</div>
 
 <br>
 <br>
 <div class="playlist-container top-tracks-container">
-  <h2>Your Top Tracks</h2>
+  <h2>Your Top Tracks<img id="spotify-logo" src="../static/Spotify_App_Logo.svg"> </h2>
   <ul class="track-list">
     {% for track in t_tracks %}
     <li class="track-item">
@@ -59,6 +90,8 @@
     {% endfor %}
   </ul>
 </div>
+
+<!-- <a class="nav-item nav-link" id="home" href="/">Home</a> -->
 
 <script src="../static/my_profile.js"></script>
 {% endblock %}

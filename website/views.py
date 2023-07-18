@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
 from flask_login import login_required, current_user
 import jinja2
-from .models import Album, User
+from .models import Album, User, FavoriteAlbum
 from . import db
 import json
 from dotenv import load_dotenv
@@ -133,6 +133,12 @@ def redirectPage():
         db.session.commit()
     return redirect(url_for("views.my_profile", _external=True))
 
+@views.route('/all-albums', methods=['GET'])
+@login_required
+def all_albums():
+    return render_template("all_albums.html", user=current_user)
+
+
 def create_spotify_oauth():
     load_dotenv()
     return SpotifyOAuth(client_id=os.getenv('CLIENT_ID'), client_secret=os.getenv('CLIENT_SECRET'),
@@ -236,3 +242,13 @@ def add_album():
     flash('Album review added!', category='success')
     return jsonify({})
 
+@views.route('/add-favorite', methods=['POST'])
+def add_favorite():
+    album = json.loads(request.data)
+    album_img = album['albumImgUrl']
+    album_name = album['albumName']
+    
+    new_favorite = FavoriteAlbum(album_name = album_name, album_img=album_img, user_id = current_user.id)
+    db.session.add(new_favorite)
+    db.session.commit()
+    return jsonify({})
