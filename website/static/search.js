@@ -16,7 +16,7 @@ button.addEventListener('click', () => {
 })
 
 
-function submitReview(event, albumImgUrl, albumName, albumId) {
+function submitReview(event, albumImgUrl, albumName, albumId, artistName) {
     event.preventDefault();
 
     let rating = document.getElementById("rating-"+albumName).value;
@@ -27,7 +27,7 @@ function submitReview(event, albumImgUrl, albumName, albumId) {
     if (favoriteButton.style.color === "red") {
       fetch("/add-favorite", {
         method: "POST",
-        body: JSON.stringify({ albumImgUrl: albumImgUrl, albumName:albumName }),
+        body: JSON.stringify({ albumImgUrl: albumImgUrl, albumName:albumName, artistName:artistName}),
         }).then((_res) => {
           console.log("success favoriting")
             });
@@ -36,7 +36,8 @@ function submitReview(event, albumImgUrl, albumName, albumId) {
       albumImgUrl: albumImgUrl,
       albumName: albumName,
       rating: rating,
-      review: review
+      review: review,
+      artistName:artistName
     };
 
     fetch("/add-album", {

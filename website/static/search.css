@@ -1,0 +1,169 @@
+    .album-list {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          grid-gap: 20px;
+          z-index: 0;
+        }
+      
+        .album-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          color: #fff;
+
+        }
+      
+        .album-button {
+          background: transparent;
+          border: none;
+          padding: 0;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+        }
+      
+        .album-button:hover {
+          background-color: rgba(0, 0, 0, 0.3);
+        }
+        
+      
+        .album-button:focus {
+          outline: none;
+        }
+      
+        .album-image {
+          width: 100%;
+          height: auto;
+          object-fit: cover;
+          margin-bottom: 10px;
+          border: 2px solid transparent;
+          transition: border-color 0.3s ease;
+        }
+
+        .div-album-item {
+            border: 2px solid green;
+            padding: 0;
+            border-color: #0a9b3d;
+          border-width: 10px;
+        }
+        /* .album-image:hover {
+          border-color: #0a9b3d;
+          border-width: 10px;
+        } */
+      
+        .album-name {
+          font-size: 16px;
+          font-weight: bold;
+          line-height: 1.2;
+          margin-bottom: 5px;
+        }
+      
+        .review-form {
+          display: none;
+          margin-top: 10px;
+        }
+      
+        .review-form label {
+          display: block;
+          margin-bottom: 5px;
+          color: #fff;
+        }
+      
+        .review-form textarea {
+          height: 100px;
+          width: 100%;
+          padding: 1.5rem;
+          border-radius: 0.5rem;
+          background: transparent;
+          border: 2px solid white;
+          resize: none;
+          color: white;
+        }
+      
+        .review-form button {
+          margin-top: 10px;
+        }
+      
+        h1 {
+          color: white;
+        }
+      
+
+        .album-button p {
+            color: white;
+        }
+
+        dialog::backdrop {
+        backdrop-filter: blur(3px);
+        }   
+
+        .modal-header {
+    padding: 10px 15px !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    border-bottom: 1px solid black !important;
+  }
+
+  .modal-header .title {
+    font-size: 1.25rem !important;
+    font-weight: bold !important;
+  }
+
+  .modal-header .close-button {
+    cursor: pointer !important;
+    border: none !important;
+    outline: none !important;
+    background: none !important;
+    font-size: 1.25rem !important;
+    font-weight: bold !important;
+  }
+
+  .favorite-button {
+  position: absolute;
+  top: 67.5%;
+  left: 28%;
+  background: transparent;
+  border: none;
+  margin: 5px;
+  font-size: 20px;
+  outline: none;
+  color: grey;
+  padding: 0;
+}
+
+.favorite-button i:hover {
+  cursor: pointer;
+} 
+
+body {
+    background-color:rgb(15, 24, 18);
+    /* background-image: linear-gradient(black, rgb(17, 44, 25), rgb(43, 124, 52)); */
+}
+
+
+/* Flashing */
+.album-item figure:hover img {
+	opacity: 1;
+	-webkit-animation: flash 1.5s;
+	animation: flash 1.5s;
+}
+@-webkit-keyframes flash {
+	0% {
+		opacity: .4;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+@keyframes flash {
+	0% {
+		opacity: .4;
+	}
+	100% {
+		opacity: 1;
+	}
+}

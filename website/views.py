@@ -88,7 +88,7 @@ def my_profile():
         user = User.query.get(current_user.id)
         user.top_tracks = top_tracks_json
         db.session.commit()
-        return render_template("my_profile.html", user=current_user, t_tracks = tracks)
+        return render_template("my_profile.html", user=current_user, t_tracks = tracks, len=len)
 
 
 @views.route('/feed')
@@ -133,17 +133,18 @@ def redirectPage():
         db.session.commit()
     return redirect(url_for("views.my_profile", _external=True))
 
+def create_spotify_oauth():
+    load_dotenv()
+    return SpotifyOAuth(client_id=os.getenv('CLIENT_ID'), client_secret=os.getenv('CLIENT_SECRET'),
+                        redirect_uri=url_for("views.redirectPage", _external=True),
+                        scope="user-top-read")
 @views.route('/all-albums', methods=['GET'])
 @login_required
 def all_albums():
     return render_template("all_albums.html", user=current_user)
 
 
-def create_spotify_oauth():
-    load_dotenv()
-    return SpotifyOAuth(client_id=os.getenv('CLIENT_ID'), client_secret=os.getenv('CLIENT_SECRET'),
-                        redirect_uri=url_for("views.redirectPage", _external=True),
-                        scope="user-top-read")
+
 
 @views.route('/search', methods=['GET', 'POST'])
 @login_required
@@ -211,16 +212,14 @@ def search_album():
             result = search_for_artist(token, artist_name)
             artist_id = result["id"]
             songs = get_songs_by_artist(token, artist_id)
-
             for i in range(len(songs)):
-                img_urls.append([songs[i]['images'][1]['url'], songs[i]['name'], i])
+                img_urls.append([songs[i]['images'][1]['url'], songs[i]['name'], i, songs[i]['artists'][0]['name']])
     return render_template("search.html", user=current_user, img_urls=img_urls)
 
 @views.route('/delete-album', methods=['POST'])
 def delete_album():  
     album_json = json.loads(request.data) # this function expects a JSON from the INDEX.js file 
     albumId = album_json['albumId']
-    print(albumId)
     album = Album.query.get(albumId)
     if album:
         if album.user_id == current_user.id:
@@ -234,9 +233,10 @@ def add_album():
     album = json.loads(request.data)
     album_img = album['albumImgUrl']
     album_name = album['albumName']
+    artist_name = album['artistName']
     rating = album['rating']
     review = album['review']
-    new_album = Album(album_name = album_name, album_img=album_img, user_id = current_user.id, rating=rating, review=review)
+    new_album = Album(artist_name = artist_name, album_name = album_name, album_img=album_img, user_id = current_user.id, rating=rating, review=review)
     db.session.add(new_album)
     db.session.commit()
     flash('Album review added!', category='success')
@@ -244,11 +244,24 @@ def add_album():
 
 @views.route('/add-favorite', methods=['POST'])
 def add_favorite():
-    album = json.loads(request.data)
-    album_img = album['albumImgUrl']
-    album_name = album['albumName']
-    
-    new_favorite = FavoriteAlbum(album_name = album_name, album_img=album_img, user_id = current_user.id)
+    favorite_json = json.loads(request.data)
+    album_img = favorite_json['albumImgUrl']
+    album_name = favorite_json['albumName']
+    artist_name = favorite_json['artistName']
+    new_favorite = FavoriteAlbum(artist_name = artist_name, album_name = album_name, album_img=album_img, user_id = current_user.id)
     db.session.add(new_favorite)
     db.session.commit()
+    return jsonify({})
+
+
+@views.route('/delete-favorite', methods=['POST'])
+@login_required
+def delete_favorite():
+    favorite_json = json.loads(request.data) # this function expects a JSON from the INDEX.js file 
+    favoriteId = favorite_json['favoriteId']
+    favorite = FavoriteAlbum.query.get(favoriteId)
+    if favorite:
+        if favorite.user_id == current_user.id:
+            db.session.delete(favorite)
+            db.session.commit()
     return jsonify({})

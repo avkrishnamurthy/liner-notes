@@ -11,6 +11,7 @@ followers = db.Table(
 
 class Album(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    artist_name = db.Column(db.Text)
     album_name = db.Column(db.String(10000))
     date = db.Column(db.DateTime(timezone=True), default=func.now())
     album_img = db.Column(db.String(10000))
@@ -51,7 +52,9 @@ class User(db.Model, UserMixin):
 
 class FavoriteAlbum(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    artist_name = db.Column(db.String(10000))
     album_name = db.Column(db.String(10000))
     album_img = db.Column(db.String(10000))
+    date = db.Column(db.DateTime(timezone=True), default=func.now())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship('User', backref='user_favorite_albums')

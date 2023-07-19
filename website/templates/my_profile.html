@@ -11,57 +11,58 @@
 <h1 align="center">{{user.first_name}}</h1>
 <p id="username" align="center">@{{user.username}}<p>
   <div class="fav-rev">
-    <div>
-      <h3>Favorites</h3>
-      <!-- <img src="../static/Spotify_App_Logo.svg"> -->
-      <div class="content">
-    
-        <div class="images">
+    {% if len(user.favorite_albums) > 0 %}
+      <div class="fav-content">    
+        <div class="fav-images">
           {% for favorite_album in user.favorite_albums%}
-          <div class="my-album-things">
-            <button data-modal-target="#fav-modal-{{favorite_album.id}}" class="img-button"><img src="{{ favorite_album.album_img }}" alt="Album Cover" class="album-image"></button>
-            <div class="modal" id="fav-modal-{{favorite_album.id}}">
-              <div class="modal-header">
-                <div class="title">{{ favorite_album.album_name }}</div>
-                <button data-close-button class="close-button">&times;</button>
+          <div class="my-fav-album-things">
+            <button data-fav-modal-target="#fav-modal-{{favorite_album.id}}" class="img-button"><img src="{{ favorite_album.album_img }}" alt="Album Cover" class="fav-album-image"></button>
+            <div class="fav-modal" id="fav-modal-{{favorite_album.id}}">
+              <div class="fav-modal-header">
+                <div class="fav-title">{{ favorite_album.album_name }} - {{favorite_album.artist_name}}</div>
+                <button data-fav-close-button class="fav-close-button">&times;</button>
               </div>
-              <div class="modal-body">
-                <p>Hi</p>
+              <div class="fav-modal-body">
+                <button onclick="deleteFavorite('{{ favorite_album.id }}')" class="remove-favorite-button-{{favorite_album.id}}">
+                  Remove from Favorites
+                </button>
+                <p>Favorited on {{favorite_album.date}}</p>
               </div>
             </div>
-            
           </div>   
             {% endfor %}
-            <div id="overlay"></div>
         </div>
-        <div onclick="side_slide(-1)" class="slide left" id="left">
+        <div onclick="fav_side_slide(-1)" class="fav-slide left" id="fav-left">
           <span class="fa fa-angle-left"></span>
         </div>
-        <div onclick="side_slide(1)" class="slide right" id="right">
+        <div onclick="fav_side_slide(1)" class="fav-slide right" id="fav-right">
           <span class="fa fa-angle-right"></span>
         </div>
       </div>
-    </div>
+      {%else%}
+        <div class="empty"><br><br><br><p></p><h2 class="empty-favs">Favorite some albums!</h2></div>
+      {%endif%}
+
+  {% if len(user.albums) > 0 %}
   <div class="content">
-    
     <div class="images">
       {% for album in user.albums%}
       <div class="my-album-things">
         <button data-modal-target="#modal-{{album.id}}" class="img-button"><img src="{{ album.album_img }}" alt="Album Cover" class="album-image"></button>
         <div class="modal" id="modal-{{album.id}}">
           <div class="modal-header">
-            <div class="title">{{ album.album_name }}</div>
+            <div class="title">{{ album.album_name }} - {{album.artist_name}}</div>
             <button data-close-button class="close-button">&times;</button>
           </div>
           <div class="modal-body">
-            <p class="album-rating">Rating: {{ album.rating }}HIII</p>
-            <p class="album-review">Review: {{ album.review }}BYEE</p>
+            <p class="album-rating"><strong>Rating:</strong> {{ album.rating }}</p>
+            <p class="album-review"><strong>Review:</strong> {{ album.review }}</p>
           </div>
         </div>
         
       </div>   
         {% endfor %}
-        <div id="overlay"></div>
+        
     </div>
     <div onclick="side_slide(-1)" class="slide left" id="left">
       <span class="fa fa-angle-left"></span>
@@ -70,7 +71,12 @@
       <span class="fa fa-angle-right"></span>
     </div>
   </div>
+  {%else%}
+  <div class="empty"><br><br><br><p></p><h2 class="empty-favs">Review some albums!</h2></div>
+  {%endif%}
+
 </div>
+
 
 <br>
 <br>
@@ -90,6 +96,8 @@
     {% endfor %}
   </ul>
 </div>
+
+<div id="overlay"></div>
 
 <!-- <a class="nav-item nav-link" id="home" href="/">Home</a> -->
 

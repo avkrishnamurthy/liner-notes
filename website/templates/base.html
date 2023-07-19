@@ -25,7 +25,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbar">
-        <h1>Liner Notes</h1>
+        <h1 class="page-title">Liner Notes</h1>
         <div class="navbar-nav ml-auto">
           {% if user.is_authenticated %}
           <a class="nav-item nav-link" id="home" href="/">Home</a>
@@ -168,6 +168,14 @@
     #treble {
       width: 2%;
       padding: 8px;
+    }
+
+    .page-title {
+      color: White;
+    }
+
+    .navbar {
+      background-image: linear-gradient(black, rgba(68, 66, 66, 0.672));
     }
 </style>
 {%endblock%}
