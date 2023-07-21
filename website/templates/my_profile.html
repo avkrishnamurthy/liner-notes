@@ -26,7 +26,8 @@
                 <button onclick="deleteFavorite('{{ favorite_album.id }}')" class="remove-favorite-button-{{favorite_album.id}}">
                   Remove from Favorites
                 </button>
-                <p>Favorited on {{favorite_album.date}}</p>
+                <p></p>
+                <p>You favorited this album on {{get_date(favorite_album.date)}}</p>
               </div>
             </div>
           </div>   
@@ -70,6 +71,8 @@
     <div onclick="side_slide(1)" class="slide right" id="right">
       <span class="fa fa-angle-right"></span>
     </div>
+    <p></p>
+    <a href="{{ url_for('views.my_reviews') }}" class="my-reviews-button">View All Album Reviews -></a>
   </div>
   {%else%}
   <div class="empty"><br><br><br><p></p><h2 class="empty-favs">Review some albums!</h2></div>
@@ -98,8 +101,6 @@
 </div>
 
 <div id="overlay"></div>
-
-<!-- <a class="nav-item nav-link" id="home" href="/">Home</a> -->
 
 <script src="../static/my_profile.js"></script>
 {% endblock %}

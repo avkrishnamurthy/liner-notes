@@ -4,115 +4,95 @@
 
 {% block content %}
 
-<style>
-  .playlist-container {
-    background-color: #1c1c1c;
-    padding: 20px;
-    margin-bottom: 40px;
-  }
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='profile.css')}}">
 
-  .album-list,
-  .track-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .album-item,
-  .track-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-
-  .album-cover,
-  .track-cover {
-    width: 80px;
-    height: 80px;
-    margin-right: 20px;
-    overflow: hidden;
-  }
-
-  .album-image,
-  .track-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .album-details,
-  .track-details {
-    color: #fff;
-  }
-
-  .album-title,
-  .track-title {
-    margin: 0;
-    font-size: 16px;
-    font-weight: bold;
-    line-height: 1.2;
-  }
-
-  .album-rating,
-  .album-review,
-  .track-artist,
-  .track-album {
-    margin: 0;
-    font-size: 14px;
-    line-height: 1.2;
-  }
-
-  .track-list {
-    display: flex;
-    flex-direction: column;
-  }
-
-  h1,
-  h2 {
-    color: white;
-  }
-
-  body {
-    background-color: black;
-  }
-
-  .track-details p {
-    color: rgb(160, 158, 158);
-  }
-
-  .top-tracks-container {
-    width: 60%; /* Adjust the width as desired */
-  }
-  .follow-btn {
-    margin-bottom: 10px;
-  }
-</style>
-
-<h1>{{ user.username }}'s Profile!</h1>
-
-<div class="playlist-container">
-  <h2>{{user.username}}'s Albums</h2>
-  <ul class="album-list">
-    {% for album in user.albums %}
-    <li class="album-item">
-      <div class="album-cover">
-        <img src="{{ album.album_img }}" alt="Album Cover" class="album-image">
+<h1 align="center">{{user.first_name}}</h1>
+<p id="username" align="center">@{{user.username}}<p>
+  {% if current_user.is_authenticated %}
+  {% if current_user.id != user.id %}
+  {% if current_user in user.follower %}
+  <button type="button" class="unfollow-button" onclick="toggleFollow('{{ user.username }}')">Unfollow</button>
+        {% else %}
+        <button type="button" class="follow-button" onclick="toggleFollow('{{ user.username }}')">Follow</button>
+        {% endif %}
+  {% endif %}
+{% endif %}
+  <div class="fav-rev">
+    {% if len(user.favorite_albums) > 0 %}
+      <div class="fav-content">    
+        <div class="fav-images">
+          {% for favorite_album in user.favorite_albums%}
+          <div class="my-fav-album-things">
+            <button data-fav-modal-target="#fav-modal-{{favorite_album.id}}" class="img-button"><img src="{{ favorite_album.album_img }}" alt="Album Cover" class="fav-album-image"></button>
+            <div class="fav-modal" id="fav-modal-{{favorite_album.id}}">
+              <div class="fav-modal-header">
+                <div class="fav-title">{{ favorite_album.album_name }} - {{favorite_album.artist_name}}</div>
+                <button data-fav-close-button class="fav-close-button">&times;</button>
+              </div>
+              <div class="fav-modal-body">
+                <p></p>
+                <p>{{user.username}} favorited this album on {{get_date(favorite_album.date)}}</p>
+              </div>
+            </div>
+          </div>   
+            {% endfor %}
+        </div>
+        <div onclick="fav_side_slide(-1)" class="fav-slide left" id="fav-left">
+          <span class="fa fa-angle-left"></span>
+        </div>
+        <div onclick="fav_side_slide(1)" class="fav-slide right" id="fav-right">
+          <span class="fa fa-angle-right"></span>
+        </div>
       </div>
-      <div class="album-details">
-        <h3 class="album-title">{{ album.album_name }}</h3>
-        <p class="album-rating">Rating: {{ album.rating }}</p>
-        <p class="album-review">Review: {{ album.review }}</p>
-      </div>
-    </li>
-    {% endfor %}
-  </ul>
+      {%else%}
+        <div class="empty"><br><br><br><p></p><h2 class="empty-favs">{{user.username}} has no favorited albums</h2></div>
+      {%endif%}
+
+  {% if len(user.albums) > 0 %}
+  <div class="content">
+    <div class="images">
+      {% for album in user.albums%}
+      <div class="my-album-things">
+        <button data-modal-target="#modal-{{album.id}}" class="img-button"><img src="{{ album.album_img }}" alt="Album Cover" class="album-image"></button>
+        <div class="modal" id="modal-{{album.id}}">
+          <div class="modal-header">
+            <div class="title">{{ album.album_name }} - {{album.artist_name}}</div>
+            <button data-close-button class="close-button">&times;</button>
+          </div>
+          <div class="modal-body">
+            <p class="album-rating"><strong>Rating:</strong> {{ album.rating }}</p>
+            <p class="album-review"><strong>Review:</strong> {{ album.review }}</p>
+          </div>
+        </div>
+        
+      </div>   
+        {% endfor %}
+        
+    </div>
+    <div onclick="side_slide(-1)" class="slide left" id="left">
+      <span class="fa fa-angle-left"></span>
+    </div>
+    <div onclick="side_slide(1)" class="slide right" id="right">
+      <span class="fa fa-angle-right"></span>
+    </div>
+    <p></p>
+    <a href="{{ url_for('views.all_reviews', username = user.username) }}" class="my-reviews-button">View All Album Reviews -></a>
+  </div>
+  {%else%}
+  <div class="empty"><br><br><br><p></p><h2 class="empty-favs">{{user.username}} has not reviewed any albums!</h2></div>
+  {%endif%}
+
 </div>
+<br>
+<br>
 
 {% if not user.top_tracks %}
  <h2>{{user.username}} has not connected their Spotify account</h2>
 {%else%}
 <div class="playlist-container top-tracks-container">
-  <h2>{{user.username}}'s Top Tracks</h2>
+  <h2>{{user.username}}'s Top Tracks<img id="spotify-logo" src="../static/Spotify_App_Logo.svg"></h2>
   <ul class="track-list">
     {% for track_num, track in (user.top_tracks).items() %}
     <li class="track-item">
@@ -129,18 +109,8 @@
 </div>
 {% endif %}
 
-{% if current_user.is_authenticated %}
-  {% if current_user.id != user.id %}
-    <form action="{{ url_for('views.follow', username=user.username) }}" method="POST">
-      <button type="submit" class="btn btn-primary follow-btn">
-        {% if current_user in user.follower %}
-          Unfollow
-        {% else %}
-          Follow
-        {% endif %}
-      </button>
-    </form>
-  {% endif %}
-{% endif %}
+<button align="center" type="submit" class="follow-button" id="follow-button"></button>
+<div id="overlay"></div>
 
+<script src="../static/profile.js"></script>
 {% endblock %}

@@ -155,15 +155,14 @@ function showArrows() {
 } 
 
 
-function deleteFavorite(favoriteId) {
-  const removeFromFavorites = confirm("Are you sure you want to remove this album from your favorites?")
-  if (removeFromFavorites) {
-    let modal = document.getElementById("modal-"+favoriteId)
-    fetch("/delete-favorite", {
+function toggleFollow(username) {
+    // let button = null
+    // button = document.querySelector('.follow-button')
+    // if (button==null) button = document.querySelector('.unfollow-button')
+    fetch("/follow/"+username, {
     method: "POST",
-    body: JSON.stringify({ favoriteId: favoriteId }),
+    body: JSON.stringify({ username: username }),
     }).then((_res) => {
-        window.location.href = "/my-profile";
+        window.location.href = "/profile/"+username;
         });
-  }
 }

@@ -3,6 +3,6 @@ function deleteAlbum(albumId) {
     method: "POST",
     body: JSON.stringify({ albumId: albumId }),
     }).then((_res) => {
-        window.location.href = "/all-albums";
+        window.location.href = "/my-reviews";
         });
 }

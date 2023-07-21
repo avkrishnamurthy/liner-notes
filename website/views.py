@@ -22,6 +22,11 @@ def home():
     return render_template("home.html", user=current_user)
 
 
+@views.route('/all-reviews', methods=['GET'])
+@login_required
+def all_reviews():
+    return render_template("all_reviews.html", user=current_user)
+
 @views.route('/profile/<username>', methods=['GET', 'POST'])
 @login_required
 def profile(username):
@@ -33,12 +38,14 @@ def profile(username):
         return redirect(url_for("views.my_profile", _external=True))
     
 
-    return render_template('profile.html', current_user = current_user, user=user)
+    return render_template('profile.html', current_user = current_user, user=user, len=len)
 
 @views.route('/follow/<username>', methods=['POST'])
 @login_required
 def follow(username):
-    user = User.query.filter_by(username=username).first()
+    follow_json = json.loads(request.data) # this function expects a JSON from the INDEX.js file 
+    follow_username = follow_json['username']
+    user = User.query.filter_by(username=follow_username).first()
     if not user:
         flash("User does not exist", category="error")
         return redirect(url_for("views.my_profile"))
@@ -58,6 +65,12 @@ def check_user_exists():
     user = User.query.filter_by(username=username).first()
     user_exists = True if user else False
     return jsonify({'exists': user_exists})
+
+@views.route('/my-reviews')
+@login_required
+def my_reviews():
+    return render_template('my_reviews.html', user=current_user)
+
 
 @views.route('/my-profile')
 @login_required
@@ -88,8 +101,11 @@ def my_profile():
         user = User.query.get(current_user.id)
         user.top_tracks = top_tracks_json
         db.session.commit()
-        return render_template("my_profile.html", user=current_user, t_tracks = tracks, len=len)
+        return render_template("my_profile.html", user=current_user, t_tracks = tracks, len=len, get_date = get_date)
 
+def get_date(favorited_date):
+    date = str(favorited_date)[0:10]
+    return date[5:7]+date[7:]+"-"+date[0:4]
 
 @views.route('/feed')
 @login_required
@@ -138,13 +154,6 @@ def create_spotify_oauth():
     return SpotifyOAuth(client_id=os.getenv('CLIENT_ID'), client_secret=os.getenv('CLIENT_SECRET'),
                         redirect_uri=url_for("views.redirectPage", _external=True),
                         scope="user-top-read")
-@views.route('/all-albums', methods=['GET'])
-@login_required
-def all_albums():
-    return render_template("all_albums.html", user=current_user)
-
-
-
 
 @views.route('/search', methods=['GET', 'POST'])
 @login_required
@@ -215,6 +224,7 @@ def search_album():
             for i in range(len(songs)):
                 img_urls.append([songs[i]['images'][1]['url'], songs[i]['name'], i, songs[i]['artists'][0]['name']])
     return render_template("search.html", user=current_user, img_urls=img_urls)
+
 
 @views.route('/delete-album', methods=['POST'])
 def delete_album():  
