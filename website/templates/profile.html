@@ -9,7 +9,7 @@
       href="{{url_for('static', filename='profile.css')}}">
 
 <h1 align="center">{{user.first_name}}</h1>
-<p id="username" align="center">@{{user.username}}<p>
+<p id="username" align="center"><strong>@{{user.username}}</strong><p>
   {% if current_user.is_authenticated %}
   {% if current_user.id != user.id %}
   {% if current_user in user.follower %}
@@ -33,7 +33,7 @@
               </div>
               <div class="fav-modal-body">
                 <p></p>
-                <p>{{user.username}} favorited this album on {{get_date(favorite_album.date)}}</p>
+                <p><strong>@{{user.username}}</strong> favorited this album on {{get_date(favorite_album.date)}}</p>
               </div>
             </div>
           </div>   
@@ -45,6 +45,7 @@
         <div onclick="fav_side_slide(1)" class="fav-slide right" id="fav-right">
           <span class="fa fa-angle-right"></span>
         </div>
+        <p id="favorites-tag"><strong>Favorites</strong></p>
       </div>
       {%else%}
         <div class="empty"><br><br><br><p></p><h2 class="empty-favs">{{user.username}} has no favorited albums</h2></div>
@@ -63,6 +64,7 @@
           </div>
           <div class="modal-body">
             <p class="album-rating"><strong>Rating:</strong> {{ album.rating }}</p>
+            <br>
             <p class="album-review"><strong>Review:</strong> {{ album.review }}</p>
           </div>
         </div>
@@ -92,7 +94,7 @@
  <h2>{{user.username}} has not connected their Spotify account</h2>
 {%else%}
 <div class="playlist-container top-tracks-container">
-  <h2>{{user.username}}'s Top Tracks<img id="spotify-logo" src="../static/Spotify_App_Logo.svg"></h2>
+  <h2>@{{user.username}}'s Top Tracks<img id="spotify-logo" src="../static/Spotify_App_Logo.svg"></h2>
   <ul class="track-list">
     {% for track_num, track in (user.top_tracks).items() %}
     <li class="track-item">

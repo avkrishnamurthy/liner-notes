@@ -118,8 +118,12 @@
     border: none !important;
     outline: none !important;
     background: none !important;
-    font-size: 1.25rem !important;
+    font-size: 2rem !important;
     font-weight: bold !important;
+  }
+
+  .modal-header .close-button:hover {
+    color: rgba(12, 12, 12, 0.607);
   }
 
   .favorite-button {
@@ -167,3 +171,9 @@ body {
 		opacity: 1;
 	}
 }
+
+#the-count {
+    float: right;
+    padding: 0.1rem 0 0 0;
+    font-size: 0.875rem;
+  }

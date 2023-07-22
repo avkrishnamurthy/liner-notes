@@ -75,9 +75,18 @@ img {
       #tag {
         font-size: 15px;
       }
+
+      a {
+        color:rgb(0, 255, 102);
+      }
+
+      a:hover {
+        color: rgb(13, 181, 80);
+      }
     
     </style>
   </head>
+  <meta id="feed-data" data-page="{{feed.page}}", data-pages="{{feed.pages}}">
   <body>
     <h1>Feed</h1>
     <div class = "feed-container" id="feed-container">
@@ -92,7 +101,7 @@ img {
                 <p>Rating: {{ album.rating }}</p>
                 <p id="review">Review: {{ album.review }}</p>
               </div>
-              <p id="tag">Reviewed by {{ album.user.username }} {{ convert_datetime(album.date) }}</p>
+              <p id="tag">Reviewed by <a href="{{ url_for('views.profile', username = album.user.username) }}">@{{album.user.username}}</a> {{ convert_datetime(album.date) }}</p>
             </div>
           
         </div>

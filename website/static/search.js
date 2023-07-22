@@ -16,9 +16,15 @@ button.addEventListener('click', () => {
 })
 
 
-function submitReview(event, albumImgUrl, albumName, albumId, artistName) {
+function submitReview(event, form) {
     event.preventDefault();
+    
 
+    const albumImgUrl = form.dataset.img;
+    const artistName = form.dataset.artist;
+    const albumName = form.dataset.album;
+    const albumId = form.dataset.albumid;
+    console.log(albumName)
     let rating = document.getElementById("rating-"+albumName).value;
     let review = document.getElementById("review-"+albumName).value;
     let modal = document.getElementById("modal-"+albumId)
@@ -77,3 +83,13 @@ function toggleFavorite(albumId) {
     favoriteButton.style.color = "red"
   }
 }
+
+$('textarea').keyup(function() {
+    
+  var characterCount = $(this).val().length,
+      current = $('#current'),
+      maximum = $('#maximum'),
+      theCount = $('#the-count');
+    
+  current.text(characterCount);
+});

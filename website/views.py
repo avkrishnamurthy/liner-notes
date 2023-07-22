@@ -22,10 +22,17 @@ def home():
     return render_template("home.html", user=current_user)
 
 
-@views.route('/all-reviews', methods=['GET'])
+@views.route('/all-reviews/<username>', methods=['GET'])
 @login_required
-def all_reviews():
-    return render_template("all_reviews.html", user=current_user)
+def all_reviews(username):
+    if username==current_user.username:
+        return redirect(url_for("views.my_review", _external=True))
+    user = User.query.filter_by(username=username).first()
+    if not user:
+        flash("User does not exist", category="error")
+        return redirect(url_for("views.my_profile", _external=True))
+    sorted_albums = Album.query.filter_by(user_id=user.id).order_by(Album.date.desc()).all()
+    return render_template("all_reviews.html", user=user, get_date=get_date, albums=sorted_albums)
 
 @views.route('/profile/<username>', methods=['GET', 'POST'])
 @login_required
@@ -38,7 +45,7 @@ def profile(username):
         return redirect(url_for("views.my_profile", _external=True))
     
 
-    return render_template('profile.html', current_user = current_user, user=user, len=len)
+    return render_template('profile.html', current_user = current_user, user=user, len=len, get_date=get_date)
 
 @views.route('/follow/<username>', methods=['POST'])
 @login_required
@@ -69,7 +76,8 @@ def check_user_exists():
 @views.route('/my-reviews')
 @login_required
 def my_reviews():
-    return render_template('my_reviews.html', user=current_user)
+    sorted_albums = Album.query.filter_by(user_id=current_user.id).order_by(Album.date.desc()).all()
+    return render_template('my_reviews.html', user=current_user, get_date=get_date, albums=sorted_albums)
 
 
 @views.route('/my-profile')

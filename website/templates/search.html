@@ -34,12 +34,16 @@
         <button title="Add to favorites" onclick="toggleFavorite('{{album[2]}}')" class="favorite-button" id="favorite-button-{{album[2]}}">
           <i class="fa-solid fa-heart"></i>
         </button>
-          <form method="dialog" onsubmit="submitReview(event, '{{ album[0] }}', '{{ album[1] }}', '{{album[2]}}', '{{album[3]}}')">
+            <form method="dialog" data-img="{{ album[0] | safe }}" data-album="{{ album[1] | safe }}" data-albumid="{{ album[2] | safe }}" data-artist="{{ album[3] | safe }}" onsubmit="submitReview(event, this)">
             <label align="left" for="rating"><strong>Rating:</strong></label>
             <input align = "left" type="number" class = "rat" name="rating-{{album[1]}}" id="rating-{{album[1]}}" min="0" max="10" step="0.5" placeholder="10" required>
             <br>
             <label for="review"></label>
-            <textarea name="review-{{album[1]}}" id="review-{{album[1]}}" rows="4" cols="50" placeholder = "Enter Review" required></textarea>
+            <textarea maxlength="528" name="review-{{album[1]}}" id="review-{{album[1]}}" rows="4" cols="50" placeholder = "Enter Review" required></textarea>
+            <div id="the-count">
+              <span id="current">0</span>
+              <span id="maximum">/ 528</span>
+            </div>
             <br>
             <button type="submit" class="btn btn-primary">Add Album Review</button>
           </form>
@@ -52,5 +56,6 @@
   <br>
 </body>
   <script src="https://kit.fontawesome.com/e23cb7b9b9.js" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="../static/search.js"></script>
   {% endblock %}

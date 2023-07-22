@@ -9,7 +9,7 @@
       href="{{url_for('static', filename='my_profile.css')}}">
 
 <h1 align="center">{{user.first_name}}</h1>
-<p id="username" align="center">@{{user.username}}<p>
+<p id="username" align="center"><strong>@{{user.username}}</strong><p>
   <div class="fav-rev">
     {% if len(user.favorite_albums) > 0 %}
       <div class="fav-content">    
@@ -23,11 +23,10 @@
                 <button data-fav-close-button class="fav-close-button">&times;</button>
               </div>
               <div class="fav-modal-body">
-                <button onclick="deleteFavorite('{{ favorite_album.id }}')" class="remove-favorite-button-{{favorite_album.id}}">
-                  Remove from Favorites
+                <p id="favorites-date">You favorited this album on {{get_date(favorite_album.date)}}</p>
+                <button id="del-fav-button" onclick="deleteFavorite('{{ favorite_album.id }}')" class="remove-favorite-button-{{favorite_album.id}}">
+                  <span id='del-button'>&times;</span>
                 </button>
-                <p></p>
-                <p>You favorited this album on {{get_date(favorite_album.date)}}</p>
               </div>
             </div>
           </div>   
@@ -39,6 +38,7 @@
         <div onclick="fav_side_slide(1)" class="fav-slide right" id="fav-right">
           <span class="fa fa-angle-right"></span>
         </div>
+        <p id="favorites-tag"><strong>Favorites</strong></p>
       </div>
       {%else%}
         <div class="empty"><br><br><br><p></p><h2 class="empty-favs">Favorite some albums!</h2></div>
@@ -57,6 +57,7 @@
           </div>
           <div class="modal-body">
             <p class="album-rating"><strong>Rating:</strong> {{ album.rating }}</p>
+            <br>
             <p class="album-review"><strong>Review:</strong> {{ album.review }}</p>
           </div>
         </div>

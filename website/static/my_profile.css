@@ -146,6 +146,7 @@
   }
 
   body {
+    background-color:black;
     background-image: linear-gradient(black, rgb(17, 44, 25), rgb(43, 124, 52));
   }
 
@@ -414,12 +415,42 @@
 
   .album-rating {
     font-size: 20px;
+    font-family: "Optima", sans-serif;
   }
 
   .album-review {
-    font-size: 15px;
+    font-size: 20px;
+    font-family: "Optima", sans-serif;
   }
 
   .my-reviews-button {
-    color: rgb(64, 64, 228);
+    color: rgb(64, 141, 228);
+  }
+
+  #favorites-tag {
+    margin-top: 18px;
+    color: white;
+  }
+
+  #del-fav-button {
+    /* border: 3px solid black; */
+    border: transparent;
+    background-color: transparent;
+    /* font-weight: 500px;
+    color: rgb(0, 0, 0); */
+  }
+
+  #del-button {
+    padding: 0px;
+    color: rgb(192, 7, 7);
+    font-size: 30px;
+  }
+
+  #del-button:hover {
+    color: red;
+  }
+
+  #favorites-date {
+    padding: 0px;
+    margin-bottom: 0px;
   }
