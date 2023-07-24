@@ -1,9 +1,8 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from .models import User
+from .models import User, Album, FavoriteAlbum
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db   ##means from __init__.py import db
 from flask_login import login_user, login_required, logout_user, current_user
-
 
 auth = Blueprint('auth', __name__)
 
@@ -58,13 +57,49 @@ def sign_up():
             flash('Passwords don\'t match.', category='error')
         elif len(password1) < 7:
             flash('Password must be at least 7 characters.', category='error')
+        elif len(username) > 17:
+            flash('Username must be less than 18 characters')
         else:
             new_user = User(email=email, username=username, first_name=first_name, password=generate_password_hash(
-                password1, method='sha256'))
+                password1, method='scrypt'))
             db.session.add(new_user)
             db.session.commit()
             login_user(new_user, remember=True)
             flash('Account created!', category='success')
-            return redirect(url_for('views.home'))
+            return redirect(url_for('views.my_profile'))
 
     return render_template("create_account.html", user=current_user)
+
+
+@auth.route('/delete-account', methods=['POST'])
+@login_required
+def delete_account():
+    password = request.form.get('password')
+    user = User.query.filter_by(username=current_user.username).first()
+    if check_password_hash(user.password, password):
+        delete_user_account(current_user)
+        flash('Your account has been successfully deleted.', 'success')
+        logout_user()
+        return redirect(url_for('auth.login', _external=True))
+    else:
+        flash('Password does not match. Account deletion failed.', 'error')
+        return redirect(url_for('views.my_profile'))
+
+def delete_user_account(user):
+    user_albums = Album.query.filter_by(user_id=user.id).all()
+    for album in user_albums:
+        db.session.delete(album)
+    user_favorites = FavoriteAlbum.query.filter_by(user_id=user.id).all()
+    for favorite in user_favorites:
+        db.session.delete(favorite)
+
+    for follow in current_user.following:
+            follow.follower.remove(current_user)
+    for followee in current_user.follower:
+        followee.following.remove(current_user)
+
+    # Step 4: Delete the User
+    db.session.delete(user)
+
+    # Commit the changes to the database
+    db.session.commit()

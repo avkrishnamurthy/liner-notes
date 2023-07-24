@@ -1,4 +1,4 @@
-const content = document.querySelector('.content')
+const content = document.querySelector('.rev-content')
 if (content!=null) {
   var indexValue = 1;
 showImg(indexValue);
@@ -44,7 +44,7 @@ openModalButtons.forEach(button => {
 })
 
 overlay.addEventListener('click', () => {
-  const modals = document.querySelectorAll('.modal.active')
+  const modals = document.querySelectorAll('.rev-modal.active')
   modals.forEach(modal => {
     closeModal(modal)
     showArrows(); // Show the arrows when the overlay is closed
@@ -53,7 +53,7 @@ overlay.addEventListener('click', () => {
 
 closeModalButtons.forEach(button => {
   button.addEventListener('click', () => {
-    const modal = button.closest('.modal')
+    const modal = button.closest('.rev-modal')
     closeModal(modal)
     showArrows(); // Show the arrows when the overlay is closed
   })
@@ -158,7 +158,7 @@ function showArrows() {
 function deleteFavorite(favoriteId) {
   const removeFromFavorites = confirm("Are you sure you want to remove this album from your favorites?")
   if (removeFromFavorites) {
-    let modal = document.getElementById("modal-"+favoriteId)
+    // let modal = document.getElementById("modal-"+favoriteId)
     fetch("/delete-favorite", {
     method: "POST",
     body: JSON.stringify({ favoriteId: favoriteId }),
@@ -167,3 +167,39 @@ function deleteFavorite(favoriteId) {
         });
   }
 }
+
+function toggleFollow(username, id, whichModal) {
+  // let button = null
+  // button = document.querySelector('.follow-button')
+  // if (button==null) button = document.querySelector('.unfollow-button')
+  fetch("/follow/"+username, {
+  method: "POST",
+  body: JSON.stringify({ username: username }),
+  }).then((_res) => {
+      const button = document.getElementById(whichModal+"-"+id.toString())
+      if ((button.innerText)[0]=="U") {
+        button.innerText = "Follow"
+      }
+      else {
+        button.innerText = "Unfollow"
+      }
+      });
+}
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  const deleteModal = document.getElementById('delete-modal');
+  const deleteModalBtn = document.getElementById('delete-account-btn');
+  const deleteModalClose = document.getElementById('delete-close-btn');
+
+  deleteModalBtn.addEventListener('click', function() {
+    deleteModal.style.display = 'block';
+    document.body.classList.add('modal-open');
+  });
+
+  deleteModalClose.addEventListener('click', function() {
+    deleteModal.style.display = 'none';
+    document.body.classList.remove('modal-open');
+  });
+});

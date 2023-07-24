@@ -40,12 +40,15 @@ def profile(username):
     if username==current_user.username:
         return redirect(url_for("views.my_profile", _external=True))
     user = User.query.filter_by(username=username).first()
+    
     if not user: 
         flash("User does not exist", category="error")
         return redirect(url_for("views.my_profile", _external=True))
     
+    following_users = set(user.following.all())
+    follower_users = set(user.follower.all())
 
-    return render_template('profile.html', current_user = current_user, user=user, len=len, get_date=get_date)
+    return render_template('profile.html', current_user = current_user, user=user, len=len, get_date=get_date, following=following_users, followers=follower_users)
 
 @views.route('/follow/<username>', methods=['POST'])
 @login_required
@@ -79,6 +82,15 @@ def my_reviews():
     sorted_albums = Album.query.filter_by(user_id=current_user.id).order_by(Album.date.desc()).all()
     return render_template('my_reviews.html', user=current_user, get_date=get_date, albums=sorted_albums)
 
+@views.route('/following/<username>')
+@login_required
+def following(username):
+    return username
+
+@views.route('/followers/<username>')
+@login_required
+def followers(username):
+    return username
 
 @views.route('/my-profile')
 @login_required
@@ -109,7 +121,13 @@ def my_profile():
         user = User.query.get(current_user.id)
         user.top_tracks = top_tracks_json
         db.session.commit()
-        return render_template("my_profile.html", user=current_user, t_tracks = tracks, len=len, get_date = get_date)
+
+        following_users = set(user.following.all())
+        follower_users = set(user.follower.all())
+
+        
+        
+        return render_template("my_profile.html", user=current_user, t_tracks = tracks, len=len, get_date = get_date, following=following_users, followers=follower_users)
 
 def get_date(favorited_date):
     date = str(favorited_date)[0:10]
@@ -122,10 +140,10 @@ def feed():
     per_page = 3
     my_feed = current_user.feed.paginate(page=page, per_page=per_page)
 
-
+    # print(my_feed.pages)
     # environment = jinja2.Environment("feed.html")
     # environment.filters['time'] = convert_datetime
-    return render_template("feed.html", user=current_user, feed=my_feed, convert_datetime=convert_datetime)
+    return render_template("feed.html", user=current_user, feed=my_feed, convert_datetime=convert_datetime, length=my_feed.pages)
 
 def convert_datetime(timestamp):
     now = datetime.now(timestamp.tzinfo)

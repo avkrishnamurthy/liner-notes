@@ -4,12 +4,72 @@
 
 {% block content %}
 
-    <link
+<link
       rel="stylesheet"
       href="{{url_for('static', filename='my_profile.css')}}">
-
-<h1 align="center">{{user.first_name}}</h1>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='stackpath.bootstrapcdn.com_bootstrap_4.4.1_css_bootstrap.min.css')}}"> -->
+     
+<!-- <h1 align="center">{{user.first_name}}</h1> -->
+<br>
 <p id="username" align="center"><strong>@{{user.username}}</strong><p>
+<div class="follow-following">
+    <ul class="follow-following-list">
+      <li id="num-follower">{{len(followers)}} <button type="button" data-toggle="modal" data-target="#followersModal" id="follower-button">
+        followers
+      </button></li>
+      <li id="num-following">{{len(following) }} <button type="button" data-toggle="modal" data-target="#followingModal" id="following-button">following</button></li>
+    </ul>
+</div>
+
+
+<div class="modal fade" id="followersModal" tabindex="-1" role="dialog" aria-labelledby="followersModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="followersModalLabel">Followers</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ul class="list-group">
+          {% for follower in followers%}
+          <li class="list-group-item"><a id='profile-link' href="{{ url_for('views.profile', username = follower.username) }}">@{{follower.username}}</a>
+            <button type="button" id='follower-{{follower.id}}' class="togglefollow" onclick="toggleFollow('{{ follower.username}}', '{{follower.id }}', 'follower')">{% if follower in following %}Unfollow {%else%}Follow{%endif%}</button>
+                </li>
+          {%endfor%}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="followingModal" tabindex="-1" role="dialog" aria-labelledby="followingModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="followingModalLabel">Following</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ul class="list-group">
+          {% for follow in following%}
+          <li class="list-group-item"><a id='profile-link' href="{{ url_for('views.profile', username = follow.username) }}">@{{follow.username}}</a>
+            <button type="button" id='following-{{follow.id}}' class="togglefollow" onclick="toggleFollow('{{ follow.username}}', '{{follow.id }}', 'following')">{% if follow in following %}Unfollow {%else%}Follow{%endif%}</button>
+                </li>
+          {%endfor%}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
   <div class="fav-rev">
     {% if len(user.favorite_albums) > 0 %}
       <div class="fav-content">    
@@ -45,17 +105,17 @@
       {%endif%}
 
   {% if len(user.albums) > 0 %}
-  <div class="content">
+  <div class="rev-content">
     <div class="images">
       {% for album in user.albums%}
       <div class="my-album-things">
-        <button data-modal-target="#modal-{{album.id}}" class="img-button"><img src="{{ album.album_img }}" alt="Album Cover" class="album-image"></button>
-        <div class="modal" id="modal-{{album.id}}">
-          <div class="modal-header">
+        <button data-modal-target="#rev-modal-{{album.id}}" class="img-button"><img src="{{ album.album_img }}" alt="Album Cover" class="album-image"></button>
+        <div class="rev-modal" id="rev-modal-{{album.id}}">
+          <div class="rev-modal-header">
             <div class="title">{{ album.album_name }} - {{album.artist_name}}</div>
             <button data-close-button class="close-button">&times;</button>
           </div>
-          <div class="modal-body">
+          <div class="rev-modal-body">
             <p class="album-rating"><strong>Rating:</strong> {{ album.rating }}</p>
             <br>
             <p class="album-review"><strong>Review:</strong> {{ album.review }}</p>
@@ -100,6 +160,26 @@
     {% endfor %}
   </ul>
 </div>
+
+
+
+
+<button type="button" id="delete-account-btn">Delete Account</button>
+
+<!-- Modal for delete confirmation -->
+<div id="delete-modal" class="delete-modal">
+  <div class="delete-modal-content">
+    <button type="button" class="delete-close" id="delete-close-btn">&times;</button>
+    <h2>Confirm Account Deletion</h2>
+    <form method="POST" action="{{url_for('auth.delete_account')}}">
+      <p>Please enter your password to confirm the account deletion.</p>
+      <input type="password" name="password" placeholder="Password" required>
+      <button type="submit" id="confirm-delete-btn">Confirm Delete</button>
+    </form>
+  </div>
+</div>
+<br>
+<br>
 
 <div id="overlay"></div>
 

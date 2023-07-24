@@ -88,7 +88,15 @@ img {
   </head>
   <meta id="feed-data" data-page="{{feed.page}}", data-pages="{{feed.pages}}">
   <body>
-    <h1>Feed</h1>
+    <br>
+    <h1 align="center">Feed</h1>
+    <br>
+    {%if length==0%} 
+    <br>
+    <br>
+    <br>
+    <h2 align="center">Follow more users!</h2>
+    {%endif%}
     <div class = "feed-container" id="feed-container">
       {% for album in feed.items %}
         <div class="feed">
