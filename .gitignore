@@ -3,5 +3,3 @@ boxenv
 website/__pycache__
 .cache
 .env
-ogsync.py
-sync_irods.py

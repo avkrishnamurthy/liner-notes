@@ -1,0 +1,22 @@
+.search-user-error {
+    display: none;
+    color: red;
+    margin-top: 5px;
+}
+
+.search-user-error-show {
+    display: block;
+}
+
+#treble {
+  width: 2%;
+  padding: 8px;
+}
+
+.page-title {
+  color: White;
+}
+
+.navbar {
+  background-image: linear-gradient(black, rgba(68, 66, 66, 0.672));
+}

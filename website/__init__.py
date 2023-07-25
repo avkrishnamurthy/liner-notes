@@ -27,13 +27,6 @@ def create_app():
     with app.app_context():
         db.create_all()
 
-    #To add, change, delete columns
-    # with app.app_context():
-    #     with db.engine.begin() as connection:
-    #         connection.execute(text("ALTER TABLE user DROP COLUMN spotify_token"))
-    #         connection.execute(text("ALTER TABLE user ADD COLUMN access_token TEXT"))
-    #         connection.execute(text("ALTER TABLE user ADD COLUMN refresh_token TEXT"))
-    #         connection.execute(text("ALTER TABLE user ADD COLUMN token_expiration INTEGER"))
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
