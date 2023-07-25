@@ -7,8 +7,14 @@ from flask_login import login_user, login_required, logout_user, current_user
 auth = Blueprint('auth', __name__, template_folder='templates')
 
 
+@auth.route('/')
+def default():
+    return redirect(url_for('auth.login', _external=True))
+
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('profiles.my_profile', _external=True))
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
