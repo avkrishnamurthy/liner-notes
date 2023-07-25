@@ -16,13 +16,20 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://{getenv('DB_USERNAME')}:{getenv('DB_PASSWORD')}!@localhost:5432/{DB_NAME}"
     db.init_app(app)
 
-    from .views import views
-    from .auth import auth
-
-    app.register_blueprint(views, url_prefix='/')
+    # from . import views
+    from .auth.auth import auth
+    from .reviews.reviews import reviews
+    from .feed.feed import feed_
+    from .profiles.profiles import profiles
+    from .search.search import search
+    
     app.register_blueprint(auth, url_prefix='/')
+    app.register_blueprint(reviews, url_prefix='/')
+    app.register_blueprint(feed_, url_prefix='/')
+    app.register_blueprint(profiles, url_prefix='/')
+    app.register_blueprint(search, url_prefix='/')
 
-    from .models import User, Album
+    from .models import User
     
     with app.app_context():
         db.create_all()

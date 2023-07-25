@@ -6,11 +6,10 @@
 
 <link
       rel="stylesheet"
-      href="{{url_for('static', filename='feed.css')}}">
+      href="{{url_for('feed.static', filename='feed.css')}}">
 <head>
     <title>Feed</title>
   </head>
-  <meta id="feed-data" data-page="{{feed.page}}", data-pages="{{feed.pages}}">
   <body>
     <br>
     <h1 align="center">Feed</h1>
@@ -33,7 +32,7 @@
                 <p>Rating: {{ album.rating }}</p>
                 <p id="review">Review: {{ album.review }}</p>
               </div>
-              <p id="tag">Reviewed by <a href="{{ url_for('views.profile', username = album.user.username) }}">@{{album.user.username}}</a> {{ convert_datetime(album.date) }}</p>
+              <p id="tag">Reviewed by <a href="{{ url_for('profiles.profile', username = album.user.username) }}">@{{album.user.username}}</a> {{ convert_datetime(album.date) }}</p>
             </div>
           
         </div>

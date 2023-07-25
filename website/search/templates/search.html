@@ -2,7 +2,7 @@
     %}
     <link
       rel="stylesheet"
-      href="{{url_for('static', filename='search.css')}}">
+      href="{{url_for('search.static', filename='search.css')}}">
 
 <body id="main-body">
       <br>
@@ -57,5 +57,5 @@
 </body>
   <script src="https://kit.fontawesome.com/e23cb7b9b9.js" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="../static/search.js"></script>
+  <script src="{{url_for('search.static', filename='search.js')}}"></script>
   {% endblock %}

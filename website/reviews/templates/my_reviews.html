@@ -1,7 +1,7 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} 
 {% block content
     %}
-    <link rel="stylesheet" href="../static/my_reviews.css">    
+    <link rel="stylesheet" href="{{url_for('reviews.static', filename='my_reviews.css')}}">    
     <br>
     <br>
     <ul class="album-list">
@@ -37,5 +37,5 @@
       <br>
       <br>
       <br>
-      <script src="../static/albums.js"></script>
+      <script src="{{url_for('reviews.static', filename='my_reviews.js')}}"></script>
   {% endblock %}

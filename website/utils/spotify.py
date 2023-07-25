@@ -51,5 +51,5 @@ def get_albums_by_artist(token, artist_id):
 def create_spotify_oauth():
     load_dotenv()
     return SpotifyOAuth(client_id=os.getenv('CLIENT_ID'), client_secret=os.getenv('CLIENT_SECRET'),
-                        redirect_uri=url_for("views.redirectPage", _external=True),
+                        redirect_uri=url_for("profiles.redirectPage", _external=True),
                         scope="user-top-read")

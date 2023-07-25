@@ -4,9 +4,7 @@
 
 {% block content %}
 
-<link
-      rel="stylesheet"
-      href="{{url_for('static', filename='my_profile.css')}}">
+<link rel="stylesheet" href="{{url_for('profiles.static', filename='my_profile.css')}}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <br>
 <p id="username" align="center"><strong>@{{user.username}}</strong><p>
@@ -25,14 +23,14 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="followersModalLabel">Followers</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" id='close-mod' data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         <ul class="list-group">
           {% for follower in followers%}
-          <li class="list-group-item"><a id='profile-link' href="{{ url_for('views.profile', username = follower.username) }}">@{{follower.username}}</a>
+          <li class="list-group-item"><a id='profile-link' href="{{ url_for('profiles.profile', username = follower.username) }}">@{{follower.username}}</a>
             <button type="button" id='follower-{{follower.id}}' class="togglefollow" onclick="toggleFollow('{{ follower.username}}', '{{follower.id }}', 'follower')">{% if follower in following %}Unfollow {%else%}Follow{%endif%}</button>
                 </li>
           {%endfor%}
@@ -47,14 +45,14 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="followingModalLabel">Following</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" id='close-mod' data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         <ul class="list-group">
           {% for follow in following%}
-          <li class="list-group-item"><a id='profile-link' href="{{ url_for('views.profile', username = follow.username) }}">@{{follow.username}}</a>
+          <li class="list-group-item"><a id='profile-link' href="{{ url_for('profiles.profile', username = follow.username) }}">@{{follow.username}}</a>
             <button type="button" id='following-{{follow.id}}' class="togglefollow" onclick="toggleFollow('{{ follow.username}}', '{{follow.id }}', 'following')">{% if follow in following %}Unfollow {%else%}Follow{%endif%}</button>
                 </li>
           {%endfor%}
@@ -128,7 +126,7 @@
       <span class="fa fa-angle-right"></span>
     </div>
     <p></p>
-    <a href="{{ url_for('views.my_reviews') }}" class="my-reviews-button">View All Album Reviews -></a>
+    <a href="{{ url_for('reviews.my_reviews') }}" class="my-reviews-button">View All Album Reviews -></a>
   </div>
   {%else%}
   <div class="empty"><br><br><br><p></p><h2 class="empty-favs">Review some albums!</h2></div>
@@ -178,5 +176,5 @@
 
 <div id="overlay"></div>
 
-<script src="../static/my_profile.js"></script>
+<script src="{{url_for('profiles.static', filename='my_profile.js')}}"></script>
 {% endblock %}
