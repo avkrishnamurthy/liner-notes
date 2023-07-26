@@ -98,6 +98,9 @@ $('textarea').keyup(function() {
   var $this = $(this); // Reference to the current textarea
   var characterCount = $this.val().length;
   var textareaID = $this.attr('id'); // Get the unique ID of the current textarea
-  var current = $('#current' + textareaID); // Construct the ID of the corresponding count element
+  var id = textareaID.substring(6)
+  var current = $('#current' + id); // Construct the ID of the corresponding count element
+  console.log(textAreaID)
+  console.log(id)
   current.text(characterCount);
 });
