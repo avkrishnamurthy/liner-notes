@@ -36,12 +36,12 @@
         </button>
             <form method="dialog" data-img="{{ album[0] | safe }}" data-album="{{ album[1] | safe }}" data-albumid="{{ album[2] | safe }}" data-artist="{{ album[3] | safe }}" onsubmit="submitReview(event, this)">
             <label align="left" for="rating"><strong>Rating:</strong></label>
-            <input align = "left" type="number" class = "rat" name="rating-{{album[1]}}" id="rating-{{album[1]}}" min="0" max="10" step="0.5" placeholder="10" required>
+            <input align = "left" type="number" class = "rat" name="rating-{{album[2]}}" id="rating-{{album[2]}}" min="0" max="10" step="0.5" placeholder="10" required>
             <br>
             <label for="review"></label>
-            <textarea maxlength="528" name="review-{{album[1]}}" id="review-{{album[1]}}" rows="4" cols="50" placeholder = "Enter Review" required></textarea>
+            <textarea maxlength="528" name="review-{{album[2]}}" id="review-{{album[2]}}" rows="4" cols="50" placeholder = "Enter Review" required></textarea>
             <div id="the-count">
-              <span id="current-{{album[1]}}">0</span>
+              <span id="current-{{album[2]}}">0</span>
               <span id="maximum">/ 528</span>
             </div>
             <br>

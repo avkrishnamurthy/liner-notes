@@ -25,8 +25,8 @@ function submitReview(event, form) {
     const albumName = form.dataset.album;
     const albumId = form.dataset.albumid;
     console.log(albumName)
-    let rating = document.getElementById("rating-"+albumName).value;
-    let review = document.getElementById("review-"+albumName).value;
+    let rating = document.getElementById("rating-"+albumId).value;
+    let review = document.getElementById("review-"+albumId).value;
     let modal = document.getElementById("modal-"+albumId)
     let favoriteButton = document.getElementById("favorite-button-"+albumId)
 
@@ -52,8 +52,8 @@ function submitReview(event, form) {
     })
     .then((_res) => {
     // Clear the rating and review fields
-    document.getElementById("rating-"+albumName).value = "";
-    document.getElementById("review-"+albumName).value = "";
+    document.getElementById("rating-"+albumId).value = "";
+    document.getElementById("review-"+albumId).value = "";
 
     // Hide the review form for the submitted album
     // const reviewForm = document.getElementById(`reviewForm-${albumName}`);
@@ -95,12 +95,12 @@ function toggleFavorite(albumId) {
 // });
 
 $('textarea').keyup(function() {
-  var $this = $(this); // Reference to the current textarea
+  var $this = $(this);
   var characterCount = $this.val().length;
-  var textareaID = $this.attr('id'); // Get the unique ID of the current textarea
+  var textareaID = $this.attr('id');
   var id = textareaID.substring(6)
-  var current = $('#current' + id); // Construct the ID of the corresponding count element
-  console.log(textAreaID)
-  console.log(id)
+  var current = $('#current' + id);
+  // console.log(textareaID)
+  // console.log(id)
   current.text(characterCount);
 });
