@@ -69,7 +69,7 @@ def my_profile():
             user.access_token = token_info['access_token']
             user.token_expiration = token_info['expires_at']
             db.session.commit()
-        sp = spotipy.Spotify(auth=user.access_token)
+        sp = spotipy.Spotify(auth=current_user.access_token)
         toptracks = sp.current_user_top_tracks(limit=5)['items']
         top_tracks_json = {}
         tracks = []
