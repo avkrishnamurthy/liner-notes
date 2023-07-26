@@ -13,7 +13,8 @@ def create_app():
     load_dotenv()
     app = Flask(__name__)
     app.config['SECRET_KEY'] = getenv('SECRET_KEY')
-    app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://{getenv('DB_USERNAME')}:{getenv('DB_PASSWORD')}!@localhost:5432/{DB_NAME}"
+    #app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://{getenv('DB_USERNAME')}:{getenv('DB_PASSWORD')}!@localhost:5432/{DB_NAME}"
+    app.config['SQLALCHEMY_DATABASE_URI'] = getenv('DATABASE_URL')
     db.init_app(app)
 
     # from . import views
@@ -22,7 +23,7 @@ def create_app():
     from .feed.feed import feed_
     from .profiles.profiles import profiles
     from .search.search import search
-    
+
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(reviews, url_prefix='/')
     app.register_blueprint(feed_, url_prefix='/')
