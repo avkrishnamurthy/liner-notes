@@ -13,7 +13,10 @@ def create_app():
     load_dotenv()
     app = Flask(__name__)
     app.config['SECRET_KEY'] = getenv('SECRET_KEY')
-    app.config['SQLALCHEMY_DATABASE_URI'] = getenv('DATABASE_URL')
+
+    db_url = getenv('DATABASE_URL')
+    db_url = db_url[:8]+'ql'+db_url[8:]
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_url
     db.init_app(app)
 
     # from . import views
