@@ -84,12 +84,20 @@ function toggleFavorite(albumId) {
   }
 }
 
+// $('textarea').keyup(function() {
+    
+//   var characterCount = $(this).val().length,
+//       current = $('#current'),
+//       maximum = $('#maximum'),
+//       theCount = $('#the-count');
+    
+//   current.text(characterCount);
+// });
+
 $('textarea').keyup(function() {
-    
-  var characterCount = $(this).val().length,
-      current = $('#current'),
-      maximum = $('#maximum'),
-      theCount = $('#the-count');
-    
+  var $this = $(this); // Reference to the current textarea
+  var characterCount = $this.val().length;
+  var textareaID = $this.attr('id'); // Get the unique ID of the current textarea
+  var current = $('#current' + textareaID); // Construct the ID of the corresponding count element
   current.text(characterCount);
 });
