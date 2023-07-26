@@ -13,7 +13,6 @@ def create_app():
     load_dotenv()
     app = Flask(__name__)
     app.config['SECRET_KEY'] = getenv('SECRET_KEY')
-    #app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://{getenv('DB_USERNAME')}:{getenv('DB_PASSWORD')}!@localhost:5432/{DB_NAME}"
     app.config['SQLALCHEMY_DATABASE_URI'] = getenv('DATABASE_URL')
     db.init_app(app)
 
