@@ -148,6 +148,9 @@
   body {
     background-color:black;
     background-image: linear-gradient(black, rgb(17, 44, 25), rgb(43, 124, 52));
+      -moz-transform: scale(0.8, 0.8);
+      zoom: 0.8;
+      zoom: 80%;
   }
 
   .track-details p {
@@ -215,7 +218,7 @@
     bottom: 0 !important;
     background-color: rgba(0, 0, 0, 0.7) !important;
     pointer-events: none !important;
-    /* filter: blur(100px); */
+    filter: blur(100px);
   }
 
   #overlay.active {
@@ -483,21 +486,24 @@
     max-width: 100px; 
   }
   .modal {
-    position: absolute;
+    /* position: absolute; */
+    /* left: 100px;
+    right: 200px; */
   max-width: 300px;
-  transform: translate(250%, 0%);
+  /* transform: translate(200%, -20%) scale(1); */
+  position: relative !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, 0%) scale(1)
   }
 
+  .loc-mod {
+    position: relative;
+  }
   .modal-body {
     max-height: 200px;
-    /* max-width: 200px; */
     overflow-y: auto;
   }
-
-  /* .model-content {
-    max-width: 100px;
-  } */
-
   .modal-body .list-group-item {
     border: none;
     background-color: transparent;
@@ -646,4 +652,18 @@
   #close-mod {
     color: white;
   }
+
+  /* Hide the Bootstrap overlay */
+.modal-backdrop {
+  display: none !important;
+}
+
+/* .modal.open {
+  opacity:1;
+  visibility:visible;
+} */
+
+body.blur {
+  filter: blur(5px);
+}
   

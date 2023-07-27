@@ -3,3 +3,4 @@ boxenv
 website/__pycache__
 .cache
 .env
+.flask_session

@@ -147,6 +147,9 @@
 
   body {
     background-image: linear-gradient(black, rgb(17, 44, 25), rgb(43, 124, 52));
+    -moz-transform: scale(0.8, 0.8); /* Moz-browsers */
+      zoom: 0.8; /* Other non-webkit browsers */
+      zoom: 80%; /* Webkit browsers */
   }
 
   .track-details p {
@@ -502,12 +505,23 @@
   .modal-dialog {
     max-width: 100px; 
   }
-  .modal {
+  /* .modal {
     position: absolute;
   max-width: 300px;
   transform: translate(250%, 0%);
-  }
+  } */
 
+  .modal {
+    /* position: absolute; */
+    /* left: 100px;
+    right: 200px; */
+  max-width: 300px;
+  /* transform: translate(200%, -20%) scale(1); */
+  position: relative !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, 18%) scale(1)
+  }
   .modal-body {
     max-height: 200px;
     /* max-width: 200px; */
@@ -610,4 +624,8 @@
 
   #close-mod {
     color: white;
+  }
+
+  .modal-backdrop {
+    display: none !important;
   }

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
+from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for, session
 from flask_login import login_required, current_user
 
 from website.utils import spotify, date
@@ -55,50 +55,53 @@ def check_user_exists():
 @profiles.route('/my-profile')
 @login_required
 def my_profile():
-    if not current_user.access_token:
-        sp_oauth = spotify.create_spotify_oauth()
-        auth_url = sp_oauth.get_authorize_url()
+    user = User.query.get(current_user.id)
+    token_info = user.token_info
+    cache_handler = spotipy.cache_handler.FlaskSessionCacheHandler(session)
+    if token_info: cache_handler.session['token_info'] = token_info    
+    #If want currently listening track
+    # auth_manager = spotipy.oauth2.SpotifyOAuth(scope="user-top-read user-read-currently-playing",
+    #                                            cache_handler=cache_handler,
+    #                                            show_dialog=True)
+    auth_manager = spotipy.oauth2.SpotifyOAuth(scope="user-top-read",
+                                               cache_handler=cache_handler,
+                                               show_dialog=True)
+    if not auth_manager.validate_token(cache_handler.get_cached_token()):
+        auth_url = auth_manager.get_authorize_url()
         return redirect(auth_url)
-    else:
-        now = int(time.time())
-        is_expired = current_user.token_expiration-now < 60
-        if is_expired:
-            sp_oauth = spotify.create_spotify_oauth()
-            token_info = sp_oauth.refresh_access_token(current_user.refresh_token)
-            user = User.query.get(current_user.id)
-            user.access_token = token_info['access_token']
-            user.token_expiration = token_info['expires_at']
-            db.session.commit()
-        sp = spotipy.Spotify(auth=current_user.access_token)
-        toptracks = sp.current_user_top_tracks(limit=5)['items']
-        top_tracks_json = {}
-        tracks = []
-        for tn, track in enumerate(toptracks):
-            top_tracks_json[tn] = (track['name'], track['album']['images'][1]['url'], track['album']['artists'][0]['name'])
-            tracks.append((track['name'], track['album']['images'][1]['url'], track['album']['artists'][0]['name']))
+    spotify = spotipy.Spotify(auth_manager=auth_manager)
 
-        user = User.query.get(current_user.id)
-        user.top_tracks = top_tracks_json
-        db.session.commit()
+    #Currently listening track
+    # k = spotify.current_user_playing_track()
+    toptracks = spotify.current_user_top_tracks(limit=5)['items']
+    me = spotify.me()["display_name"]
+    top_tracks_json = {}
+    tracks = []
+    for tn, track in enumerate(toptracks):
+        top_tracks_json[tn] = (track['name'], track['album']['images'][1]['url'], track['album']['artists'][0]['name'])
+        tracks.append((track['name'], track['album']['images'][1]['url'], track['album']['artists'][0]['name']))
 
-        following_users = set(user.following.all())
-        follower_users = set(user.follower.all())
-        return render_template("my_profile.html", user=current_user, t_tracks = tracks, len=len, get_date = date.get_date, following=following_users, followers=follower_users)
+    user = User.query.get(current_user.id)
+    user.top_tracks = top_tracks_json
+    db.session.commit()
+    following_users = set(user.following.all())
+    follower_users = set(user.follower.all())
+    return render_template("my_profile.html", user=current_user, t_tracks = tracks, me=me, len=len, get_date = date.get_date, following=following_users, followers=follower_users)
 
 @profiles.route('/redirect')
 @login_required
 def redirectPage():
-    sp_oauth = spotify.create_spotify_oauth()
-    code = request.args.get('code')
-    token_info = sp_oauth.get_access_token(code)
-    user = User.query.get(current_user.id)
-    if user:
-        user.access_token = token_info['access_token']
-        user.refresh_token = token_info['refresh_token']
-        user.token_expiration = token_info['expires_at']
+    cache_handler = spotipy.cache_handler.FlaskSessionCacheHandler(session)
+    auth_manager = spotipy.oauth2.SpotifyOAuth(scope='user-top-read',
+                                               cache_handler=cache_handler,
+                                               show_dialog=True)
+    if request.args.get("code"):
+        # Step 2. Being redirected from Spotify auth page
+        auth_manager.get_access_token(request.args.get("code"))
+        user = User.query.get(current_user.id)
+        user.token_info = cache_handler.session['token_info']
         db.session.commit()
-    return redirect(url_for("profiles.my_profile", _external=True))
-
+    return redirect(url_for('profiles.my_profile', _external=True))
 
 @profiles.route('/delete-favorite', methods=['POST'])
 @login_required

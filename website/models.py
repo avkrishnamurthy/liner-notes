@@ -30,9 +30,7 @@ class User(db.Model, UserMixin):
     albums = db.relationship('Album', overlaps='user_albums,user')
     favorite_albums = db.relationship('FavoriteAlbum', overlaps='user_favorite_albums,user')
     top_tracks = db.Column(JSONB)
-    access_token = db.Column(db.Text)
-    token_expiration = db.Column(db.Integer)
-    refresh_token = db.Column(db.Text)
+    token_info = db.Column(JSONB)
     follower = db.relationship(
         'User', 
         secondary=followers,

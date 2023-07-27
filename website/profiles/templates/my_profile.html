@@ -17,7 +17,7 @@
     </ul>
 </div>
 
-
+<div class="loc-mod">
 <div class="modal fade" id="followersModal" tabindex="-1" role="dialog" aria-labelledby="followersModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
     <div class="modal-content">
@@ -38,6 +38,7 @@
       </div>
     </div>
   </div>
+</div>
 </div>
 
 <div class="modal fade" id="followingModal" tabindex="-1" role="dialog" aria-labelledby="followingModalLabel" aria-hidden="true">
@@ -138,7 +139,7 @@
 <br>
 <br>
 <div class="playlist-container top-tracks-container">
-  <h2>Your Top Tracks<img id="spotify-logo" src="../static/Spotify_App_Logo.svg"> </h2>
+  <h2>{{me}} Top Tracks<img id="spotify-logo" src="../static/Spotify_App_Logo.svg"> </h2>
   <ul class="track-list">
     {% for track in t_tracks %}
     <li class="track-item">
@@ -176,5 +177,6 @@
 
 <div id="overlay"></div>
 
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="{{url_for('profiles.static', filename='my_profile.js')}}"></script>
 {% endblock %}

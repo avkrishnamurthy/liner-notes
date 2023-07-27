@@ -5,7 +5,9 @@ from os import getenv
 from flask_login import LoginManager
 from sqlalchemy import text
 from dotenv import load_dotenv
+from flask_session import Session
 db = SQLAlchemy()
+sess = Session()
 DB_NAME = "flask_db"
 
 
@@ -13,10 +15,12 @@ def create_app():
     load_dotenv()
     app = Flask(__name__)
     app.config['SECRET_KEY'] = getenv('SECRET_KEY')
-
+    app.config['SESSION_TYPE'] = 'filesystem'
+    app.config['SESSION_FILE_DIR'] = './.flask_session/'
     db_url = getenv('DATABASE_URL')
     db_url = db_url[:8]+'ql'+db_url[8:]
     app.config['SQLALCHEMY_DATABASE_URI'] = db_url
+    sess.init_app(app)
     db.init_app(app)
 
     # from . import views

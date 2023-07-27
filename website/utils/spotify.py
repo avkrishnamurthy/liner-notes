@@ -7,8 +7,8 @@ from requests import post, get
 from spotipy.oauth2 import SpotifyOAuth
 
 load_dotenv()
-client_id = os.getenv("CLIENT_ID")
-client_secret = os.getenv("CLIENT_SECRET")
+client_id = os.getenv("SPOTIPY_CLIENT_ID")
+client_secret = os.getenv("SPOTIPY_CLIENT_SECRET")
 
 def get_token():
     auth_string = client_id+":"+client_secret
@@ -50,6 +50,6 @@ def get_albums_by_artist(token, artist_id):
 
 def create_spotify_oauth():
     load_dotenv()
-    return SpotifyOAuth(client_id=os.getenv('CLIENT_ID'), client_secret=os.getenv('CLIENT_SECRET'),
+    return SpotifyOAuth(client_id=os.getenv('SPOTIPY_CLIENT_ID'), client_secret=os.getenv('SPOTIPY_CLIENT_SECRET'),
                         redirect_uri=url_for("profiles.redirectPage", _external=True),
                         scope="user-top-read")

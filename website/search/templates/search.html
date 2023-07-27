@@ -31,9 +31,11 @@
         <img src ="{{album[0]}}">
         <br>
         <p></p>
+        <div class="fav-but">
         <button title="Add to favorites" onclick="toggleFavorite('{{album[2]}}')" class="favorite-button" id="favorite-button-{{album[2]}}">
           <i class="fa-solid fa-heart"></i>
         </button>
+      </div>
             <form method="dialog" data-img="{{ album[0] | safe }}" data-album="{{ album[1] | safe }}" data-albumid="{{ album[2] | safe }}" data-artist="{{ album[3] | safe }}" onsubmit="submitReview(event, this)">
             <label align="left" for="rating"><strong>Rating:</strong></label>
             <input align = "left" type="number" class = "rat" name="rating-{{album[2]}}" id="rating-{{album[2]}}" min="0" max="10" step="0.5" placeholder="10" required>
@@ -57,5 +59,6 @@
 </body>
   <script src="https://kit.fontawesome.com/e23cb7b9b9.js" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="{{url_for('search.static', filename='search.js')}}"></script>
   {% endblock %}

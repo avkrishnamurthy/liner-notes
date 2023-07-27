@@ -126,17 +126,20 @@
     color: rgba(12, 12, 12, 0.607);
   }
 
+  .fav-but {
+    position: relative;
+  }
   .favorite-button {
   position: absolute;
-  top: 67.5%;
+  top: 64.5%;
   left: 28%;
   background: transparent;
   border: none;
-  margin: 5px;
+  margin-bottom: 50px;
   font-size: 20px;
   outline: none;
   color: grey;
-  padding: 0;
+  padding-bottom: 10px;
 }
 
 .favorite-button i:hover {
@@ -145,6 +148,9 @@
 
 body {
     background-color:rgb(15, 24, 18);
+    -moz-transform: scale(0.8, 0.8); /* Moz-browsers */
+      zoom: 0.8; /* Other non-webkit browsers */
+      zoom: 80%; /* Webkit browsers */
     /* background-image: linear-gradient(black, rgb(17, 44, 25), rgb(43, 124, 52)); */
 }
 
@@ -176,4 +182,8 @@ body {
     float: right;
     padding: 0.1rem 0 0 0;
     font-size: 0.875rem;
+  }
+
+  .rat {
+    max-width: 50px;
   }

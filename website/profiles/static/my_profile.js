@@ -1,4 +1,8 @@
 const content = document.querySelector('.rev-content')
+const leftArrow = document.getElementById('left');
+const rightArrow = document.getElementById('right');
+const favLeftArrow = document.getElementById('fav-left');
+const favRightArrow = document.getElementById('fav-right');
 if (content!=null) {
   var indexValue = 1;
 showImg(indexValue);
@@ -31,13 +35,11 @@ function showImg(e) {
 const openModalButtons = document.querySelectorAll('[data-modal-target]')
 const closeModalButtons = document.querySelectorAll('[data-close-button]')
 const overlay = document.getElementById('overlay')
-const leftArrow = document.getElementById('left');
-const rightArrow = document.getElementById('right');
+
 
 openModalButtons.forEach(button => {
   button.addEventListener('click', () => {
     const modal = document.querySelector(button.dataset.modalTarget)
-    console.log(modal)
     openModal(modal)
     hideArrows();
   })
@@ -49,6 +51,7 @@ overlay.addEventListener('click', () => {
     closeModal(modal)
     showArrows(); // Show the arrows when the overlay is closed
   })
+  return
 })
 
 closeModalButtons.forEach(button => {
@@ -96,8 +99,9 @@ function fav_showImg(e) {
 
 const favOpenModalButtons = document.querySelectorAll('[data-fav-modal-target]')
 const favCloseModalButtons = document.querySelectorAll('[data-fav-close-button]')
-const favLeftArrow = document.getElementById('fav-left');
-const favRightArrow = document.getElementById('fav-right');
+
+const overlay = document.getElementById('overlay')
+
 
 overlay.addEventListener('click', () => {
   const modals = document.querySelectorAll('.fav-modal.active')
@@ -105,6 +109,7 @@ overlay.addEventListener('click', () => {
     closeModal(modal)
     showArrows(); // Show the arrows when the overlay is closed
   })
+  return
 })
 
 favOpenModalButtons.forEach(button => {

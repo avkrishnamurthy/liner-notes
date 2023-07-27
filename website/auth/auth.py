@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import Blueprint, render_template, request, flash, redirect, url_for, session
 from website.models import User, Album, FavoriteAlbum
 from werkzeug.security import generate_password_hash, check_password_hash
 from website import db
@@ -36,12 +36,15 @@ def login():
 @auth.route('/logout')
 @login_required
 def logout():
+    session.clear()
     logout_user()
     return redirect(url_for('auth.login'))
 
 
 @auth.route('/sign-up', methods=['GET', 'POST'])
 def sign_up():
+    if current_user.is_authenticated:
+        return redirect(url_for('profiles.my_profile', _external=True))
     if request.method == 'POST':
         email = request.form.get('email')
         username = request.form.get('username')
