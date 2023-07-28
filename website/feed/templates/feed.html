@@ -26,7 +26,9 @@
           <div class = "album-image">
             <h2>{{album.album_name}}</h2>
             <br>
-            <img src="{{ album.album_img }}" alt="Album Cover"></div>
+            <img src="{{ album.album_img }}" alt="Album Cover">
+            <p class="song-url"><a id='song-link' target="_blank" href="{{album.album_url}}">Listen -></a></p>
+          </div>
             <div class="album-container">
               <div class="album-text">
                 <p>Rating: {{ album.rating }}</p>

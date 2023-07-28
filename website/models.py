@@ -14,6 +14,7 @@ class Album(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     artist_name = db.Column(db.Text)
     album_name = db.Column(db.String(10000))
+    album_url = db.Column(db.Text)
     date = db.Column(db.DateTime(timezone=True), default=func.now())
     album_img = db.Column(db.String(10000))
     rating = db.Column(db.Float)

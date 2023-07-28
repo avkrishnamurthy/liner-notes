@@ -24,6 +24,7 @@ function submitReview(event, form) {
     const artistName = form.dataset.artist;
     const albumName = form.dataset.album;
     const albumId = form.dataset.albumid;
+    const albumUrl = form.dataset.albumurl;
     console.log(albumName)
     let rating = document.getElementById("rating-"+albumId).value;
     let review = document.getElementById("review-"+albumId).value;
@@ -43,7 +44,8 @@ function submitReview(event, form) {
       albumName: albumName,
       rating: rating,
       review: review,
-      artistName:artistName
+      artistName:artistName,
+      albumUrl:albumUrl
     };
 
     fetch("/add-album", {

@@ -39,7 +39,8 @@ def add_album():
     artist_name = album['artistName']
     rating = album['rating']
     review = album['review']
-    new_album = Album(artist_name = artist_name, album_name = album_name, album_img=album_img, user_id = current_user.id, rating=rating, review=review)
+    album_url = album['albumUrl']
+    new_album = Album(artist_name = artist_name, album_name = album_name, album_url = album_url, album_img=album_img, user_id = current_user.id, rating=rating, review=review)
     db.session.add(new_album)
     db.session.commit()
     flash('Album review added!', category='success')
