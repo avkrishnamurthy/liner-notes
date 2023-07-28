@@ -27,9 +27,15 @@
           <div class="title"><h2>{{ album[1] }}</h2></div>
           <button data-modal-close="#modal-{{album[2]}}" class="close-button">&times;</button>
         </div>
+        <div>
+        <div class="spotify-attribution">
+          Data via <img id="spotify-logo" src="../static/Spotify_Logo_RGB_Green.png">
+        </div>
+        <br>
+        <br>
         <br>
         <img src ="{{album[0]}}">
-        <br>
+        <p><a id="album-link" href="{{album[4]}}">Go to album on Spotify</a></p>
         <p></p>
         <div class="fav-but">
         <button title="Add to favorites" onclick="toggleFavorite('{{album[2]}}')" class="favorite-button" id="favorite-button-{{album[2]}}">

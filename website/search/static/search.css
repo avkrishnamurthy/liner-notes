@@ -187,3 +187,36 @@ body {
   .rat {
     max-width: 50px;
   }
+
+  #spotify-tag {
+    color: rgb(133, 132, 132);
+  }
+
+  .spotify-attribution {
+    position: absolute;
+    color: grey;
+    margin-right: 0px;
+    /* align-items: left; */
+    /* padding: 50px; */
+  }
+  #spotify-logo {
+    position: relative;
+    left: 2%;
+    width: 150px;
+    height: 50px;
+    margin-right: 10px;
+    margin-left: 0px;
+    padding: 5px;
+    overflow-clip-margin: content-box;
+    overflow: clip;
+    color: black;
+
+}
+
+#album-link {
+  color: rgba(43, 168, 76, 0.613);
+}
+
+#album-link:hover {
+  color: rgb(8, 134, 42);
+}

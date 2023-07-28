@@ -25,9 +25,10 @@ def search_album():
                 flash('Error finding artist.', category='error') 
                 return redirect(url_for("search.search_album", _external=True))
             artist_id = result["id"]
-            songs = spotify.get_albums_by_artist(token, artist_id)
-            for i in range(len(songs)):
-                img_urls.append([songs[i]['images'][1]['url'], songs[i]['name'], i, songs[i]['artists'][0]['name']])
+            albums = spotify.get_albums_by_artist(token, artist_id)
+            for i in range(len(albums)):
+                print(albums[i])
+                img_urls.append([albums[i]['images'][1]['url'], albums[i]['name'], i, albums[i]['artists'][0]['name'], albums[i]['external_urls']['spotify']])
     return render_template("search.html", user=current_user, img_urls=img_urls)
 
 @search.route('/add-album', methods=["POST"])

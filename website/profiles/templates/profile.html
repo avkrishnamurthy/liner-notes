@@ -153,7 +153,7 @@
 </div>
 {%else%}
 <div class="playlist-container top-tracks-container">
-  <h2>@{{user.username}}'s Top Tracks<img id="spotify-logo" src="../static/Spotify_App_Logo.svg"></h2>
+  <h2>@{{user.username}}'s Top Tracks via <img id="spotify-logo" src="../static/Spotify_Logo_RGB_Green.png"> </h2>
   <ul class="track-list">
     {% for track_num, track in (user.top_tracks).items() %}
     <li class="track-item">
@@ -163,6 +163,7 @@
       <div class="track-details">
         <h3 class="track-title">{{ track[0] }}</h3>
         <p class="track-artist">{{ track[2] }}</p>
+        <p class="song-url"><a id='song-link' href="{{track[3]}}">Listen -></a></p>
       </div>
     </li>
     {% endfor %}

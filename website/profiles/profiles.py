@@ -78,8 +78,10 @@ def my_profile():
     top_tracks_json = {}
     tracks = []
     for tn, track in enumerate(toptracks):
-        top_tracks_json[tn] = (track['name'], track['album']['images'][1]['url'], track['album']['artists'][0]['name'])
-        tracks.append((track['name'], track['album']['images'][1]['url'], track['album']['artists'][0]['name']))
+        print(track['external_urls']['spotify'])
+        print("AAAAA")
+        top_tracks_json[tn] = (track['name'], track['album']['images'][1]['url'], track['album']['artists'][0]['name'], track['external_urls']['spotify'])
+        tracks.append((track['name'], track['album']['images'][1]['url'], track['album']['artists'][0]['name'], track['external_urls']['spotify']))
 
     user = User.query.get(current_user.id)
     user.top_tracks = top_tracks_json

@@ -397,7 +397,7 @@
   }
 
   #spotify-logo {
-    width: 70px;
+    width: 200px;
     height: 70px;
     margin-right: 10px;
     padding: 5px;
@@ -629,3 +629,19 @@
   .modal-backdrop {
     display: none !important;
   }
+
+  #song-link {
+    margin: 0px;
+    padding: 0px;
+    font-size: 15px;
+    color: rgba(44, 152, 40, 0.503)
+  }
+  
+  #song-link:hover {
+    color: rgb(50, 195, 45)
+  }
+  .song-url {
+    margin: 0px;
+    padding: 0px;
+  }
+    
