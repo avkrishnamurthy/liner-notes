@@ -96,13 +96,27 @@ function toggleFavorite(albumId) {
 //   current.text(characterCount);
 // });
 
-$('textarea').keyup(function() {
-  var $this = $(this);
-  var characterCount = $this.val().length;
-  var textareaID = $this.attr('id');
-  var id = textareaID.substring(6)
-  var current = $('#current' + id);
-  // console.log(textareaID)
-  // console.log(id)
-  current.text(characterCount);
+
+const reviews = document.querySelectorAll('textarea')
+
+
+reviews.forEach((review) => {
+  const currentId = review.getAttribute('data-current');
+  const current = document.getElementById(currentId);
+  console.log(current)
+  review.addEventListener('keyup', function () {
+    const characterCount = this.value.length;
+    current.textContent = characterCount;
+  });
 });
+
+// $('textarea').keyup(function() {
+//   var $this = $(this);
+//   var characterCount = $this.val().length;
+//   var textareaID = $this.attr('id');
+//   var id = textareaID.substring(6)
+//   var current = $('#current' + id);
+//   // console.log(textareaID)
+//   // console.log(id)
+//   current.text(characterCount);
+// });
