@@ -7,6 +7,10 @@ from flask_login import login_user, login_required, logout_user, current_user
 auth = Blueprint('auth', __name__, template_folder='templates')
 
 
+@auth.route('/googlefbf8ec5188c80724.html')
+def google_search_console():
+    return render_template("googlefbf8ec5188c80724.html")
+
 @auth.route('/')
 def default():
     return redirect(url_for('auth.login', _external=True))
