@@ -11,6 +11,9 @@ auth = Blueprint('auth', __name__, template_folder='templates')
 def google_search_console():
     return render_template("googlefbf8ec5188c80724.html")
 
+@auth.route('/e5b4317fc3ca0154a319e265f55e6580.html')
+def malware_scanner():
+    return render_template("e5b4317fc3ca0154a319e265f55e6580.html")
 @auth.route('/')
 def default():
     return redirect(url_for('auth.login', _external=True))
