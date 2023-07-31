@@ -1,0 +1,66 @@
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<style>
+    a {
+        border: 1px solid white;
+        padding: 30px;
+        color: white;
+        font-size: 25px;
+    }
+
+    #login {
+        background-image: linear-gradient(black, darkgreen);
+    }
+
+    #sign-up {
+        background-image: linear-gradient(darkgreen, black);
+    }
+
+    body {
+        background-color:rgb(15, 24, 18);
+      }
+    
+
+    h1 {
+        color: white;
+    }
+
+    .button-redirects {
+        display: flex;
+        justify-content: center;
+    }
+
+    #about {
+    font-family: "Optima", sans-serif;
+    font-size: 21px;
+    color: white;
+    margin:0 auto;
+    text-align: center;
+    width: 700px;
+    margin-top: 50px;
+  
+    
+    }
+</style>
+
+<div>
+    <h1 align="center">Welcome to Liner Notes</h1>
+</div>
+<div class="button-redirects">
+<a id="login" href="{{url_for('auth.login')}}">Login</a>
+<a id="sign-up" href="{{url_for('auth.sign_up')}}">Sign Up</a>
+</div>
+<div id='about'>
+    <p> Liner Notes is a platform for music enthusiasts to share their musical opinions with a community. 
+        The main function of Liner Notes is to serve as an album reviewing app, where users can rate and review their favorite albums,
+        sharing them with other users that they can follow. Every user has a custom feed, consisting of dynamically-loaded reviews made by other users that they follow.
+        In addition to a user's album reviews, albums can be favorited and displayed on your profile as a way to showcase the albums that you love.
+        Also on your profile will be your top 5 spotify tracks, which is obtained, along with the albums that can be searched for and reviewed,
+        via the Spotify Web API. </p>
+
+
+</div>
+
+{% endblock %}

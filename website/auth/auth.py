@@ -16,6 +16,7 @@ def malware_scanner():
     return render_template("e5b4317fc3ca0154a319e265f55e6580.html")
 @auth.route('/')
 def default():
+    return render_template("default.html")
     return redirect(url_for('auth.login', _external=True))
 
 @auth.route('/login', methods=['GET', 'POST'])
