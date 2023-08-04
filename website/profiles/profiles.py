@@ -72,7 +72,7 @@ def my_profile():
     if not auth_manager.validate_token(cache_handler.get_cached_token()):
         auth_url = auth_manager.get_authorize_url()
         return render_template("my_profile.html", auth_url=auth_url, user=current_user, t_tracks = None, me=None, len=len, get_date = date.get_date, following=following_users, followers=follower_users)
-        return redirect(auth_url)
+        #return redirect(auth_url)
     spotify = spotipy.Spotify(auth_manager=auth_manager)
 
     #Currently listening track

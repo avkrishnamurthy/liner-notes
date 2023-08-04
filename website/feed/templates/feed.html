@@ -21,7 +21,7 @@
     <h2 align="center">Follow more users!</h2>
     {%endif%}
     <div class = "feed-container" id="feed-container">
-      {% for album in feed.items %}
+      {% for album in feed %}
         <div class="feed">
           <div class = "album-image">
             <h2>{{album.album_name}}</h2>
@@ -46,67 +46,6 @@
       </div>
     </div>
   </body>
-
-  <script type="text/javascript">
-    let page = {{ feed.page }};
-  let totalPages = {{ feed.pages }};
-  let loading = false;
-  let allLoaded = (page === totalPages);
-  let userScrolled = false;
-  // Function to check if the user has reached the bottom of the page
-  function atBottomOfPage() {
-  return (
-      window.innerHeight + window.scrollY >= document.body.offsetHeight - 1000
-  );
-  }
-
-  // Function to load more feed items
-  function loadMoreItems() {
-  if (loading || allLoaded || !userScrolled) return;
-  loading = true;
-
-  const feedContainer = document.getElementById("feed-container");
-  const loadingSymbol = document.getElementById("loading-symbol");
-
-  // Show the loading symbol
-  loadingSymbol.style.display = "block";
-
-  // Fetch the next page of albums
-  fetch(`/feed?page=${page + 1}`)
-      .then((response) => response.text())
-      .then((data) => {
-      const tempDiv = document.createElement("div");
-      tempDiv.innerHTML = data;
-      const newAlbums = tempDiv.querySelectorAll(".feed");
-      if (newAlbums.length === 0) {
-          // No more album reviews remaining
-          allLoaded = true;
-          loadingSymbol.innerHTML = "<span style='color: white;'>You are all caught up! No more album reviews on your feed!</span>";
-          return;
-      }
-
-      // Append the new albums to the feed container
-      newAlbums.forEach((album) => {
-          feedContainer.appendChild(album);
-      });
-
-      // Increment the page number
-      page += 1;
-
-      // Hide the loading symbol after a short delay
-      setTimeout(() => {
-          loadingSymbol.style.display = "none";
-          loading = false;
-      }, 2000);
-      });
-  }
-
-  // Event listener for scroll event
-  window.addEventListener("scroll", () => {
-  if (atBottomOfPage()) {
-      userScrolled = true;
-      loadMoreItems();
-  }
-  });
-  </script>
   {% endblock %}
+
+  
