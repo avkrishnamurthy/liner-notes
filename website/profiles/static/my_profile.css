@@ -686,3 +686,15 @@ body.blur {
   padding: 0px;
 }
   
+.spotify-button {
+  border: 1px solid white;
+  color: rgb(50, 195, 45);
+  padding: 10px;
+  background-color:rgb(15, 24, 18);
+}
+
+.spotify-button:hover {
+  background-color: rgb(50, 195, 45);
+  color: rgb(15, 24, 18);
+  text-decoration: none;
+}

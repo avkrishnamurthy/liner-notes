@@ -140,6 +140,8 @@
 <br>
 <div class="playlist-container top-tracks-container">
   <h2>@{{user.username}}'s Top Tracks via <img id="spotify-logo" src="../static/Spotify_Logo_RGB_Green.png"> </h2>
+
+  {% if t_tracks %}
   <ul class="track-list">
     {% for track in t_tracks %}
     <li class="track-item">
@@ -154,6 +156,9 @@
     </li>
     {% endfor %}
   </ul>
+  {% else %}
+    <a href="{{auth_url}}" class="spotify-button">Connect to Spotify</a>
+  {%endif%}
 </div>
 
 

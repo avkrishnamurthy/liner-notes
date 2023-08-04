@@ -56,6 +56,9 @@ def check_user_exists():
 @login_required
 def my_profile():
     user = User.query.get(current_user.id)
+    following_users = set(user.following.all())
+    follower_users = set(user.follower.all())
+
     token_info = user.token_info
     cache_handler = spotipy.cache_handler.FlaskSessionCacheHandler(session)
     if token_info: cache_handler.session['token_info'] = token_info    
@@ -68,6 +71,7 @@ def my_profile():
                                                show_dialog=True)
     if not auth_manager.validate_token(cache_handler.get_cached_token()):
         auth_url = auth_manager.get_authorize_url()
+        return render_template("my_profile.html", auth_url=auth_url, user=current_user, t_tracks = None, me=None, len=len, get_date = date.get_date, following=following_users, followers=follower_users)
         return redirect(auth_url)
     spotify = spotipy.Spotify(auth_manager=auth_manager)
 
@@ -84,8 +88,6 @@ def my_profile():
     user = User.query.get(current_user.id)
     user.top_tracks = top_tracks_json
     db.session.commit()
-    following_users = set(user.following.all())
-    follower_users = set(user.follower.all())
     return render_template("my_profile.html", user=current_user, t_tracks = tracks, me=me, len=len, get_date = date.get_date, following=following_users, followers=follower_users)
 
 @profiles.route('/redirect')
