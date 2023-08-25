@@ -13,10 +13,10 @@ The backend is created in Python. It utilizes Flask to create the backend logic 
 [Watch the demo](https://www.youtube.com/watch?v=BPlUprQ1PSA)
 
 ## Photos
-<img width="1420" alt="profile" src="https://github.com/avkrishnamurthy/liner-notes/assets/46771241/935bd109-1ea1-4a37-9eb3-2c78a7c46c5b">
-<img width="1440" alt="linernotes" src="https://github.com/avkrishnamurthy/liner-notes/assets/46771241/fbadb9df-521b-4c28-8954-ac842cfeba1c">
+<img width="1420" alt="profile" src="https://github.com/avkrishnamurthy/liner-notes/assets/46771241/5e231ad4-e236-47e7-8ef8-86006ff2e173">
+<img width="1440" alt="linernotes" src="https://github.com/avkrishnamurthy/liner-notes/assets/46771241/0a012e72-90f3-4d5b-99ad-1e8fb8b09c89">
 
-![feedRenamed](https://github.com/avkrishnamurthy/liner-notes/assets/46771241/dbac6df3-05c6-45d6-bf22-3d8272a8c77f)
+![feedRenamed](https://github.com/avkrishnamurthy/liner-notes/assets/46771241/ddc1562b-76f3-4fbf-9f87-d23a667edbc0)
 
 # Technologies
 
@@ -28,4 +28,4 @@ The backend is created in Python. It utilizes Flask to create the backend logic 
 <img src="https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white">
 <img src="https://img.shields.io/badge/jinja-white.svg?style=for-the-badge&logo=jinja&logoColor=black">
 <img src="https://img.shields.io/badge/heroku-%23430098.svg?style=for-the-badge&logo=heroku&logoColor=white">
-<img width="115" height="35" src="https://github.com/avkrishnamurthy/liner-notes/assets/46771241/7171dd57-5ed3-4beb-bff7-5d5a8fe3e89d">
+<img src="https://custom-icon-badges.demolab.com/badge/-SQLAlchemy-aqua.svg?logo=sqlalchemy1"/>
