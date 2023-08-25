@@ -8,6 +8,7 @@ The backend is created in Python. It utilizes Flask to create the backend logic 
 ## See it in action
 
 [Try it for yourself](https://liner-notes-627b78c2d8e8.herokuapp.com/)
+
 [Watch the demo](https://www.youtube.com/watch?v=BPlUprQ1PSA)
 
 ## Photos
